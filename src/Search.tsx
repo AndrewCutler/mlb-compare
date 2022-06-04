@@ -1,21 +1,24 @@
-import { Flex, Button, Input } from '@chakra-ui/react';
+import { Flex, Button, Input, Tooltip } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { setSearchResults } from './store/slice';
+import fake from './fake.json';
 
 const request = async (name: string) =>
 	fetch(`${process.env.REACT_APP_API ?? ''}/search/${name}`).then((res) =>
 		res.json()
 	);
 
-export interface ISearchProps {
-	onData: (data: any) => void;
-}
+const Search = (): React.ReactElement => {
+	const dispatch = useDispatch();
 
-const Search = ({ onData }: ISearchProps): React.ReactElement => {
 	const [inputText, setInputText] = useState<string>('');
 	const [search, setSearch] = useState<string>('');
 
-	const { refetch, data, isFetching } = useQuery(
+	const isSearchDisabled = search?.length < 3;
+
+	const { refetch, data, isFetching, isError, error } = useQuery(
 		['search', search],
 		() => request(search),
 		{
@@ -32,17 +35,27 @@ const Search = ({ onData }: ISearchProps): React.ReactElement => {
 	}, [inputText]);
 
 	useEffect(() => {
-		if (!!search.trim()) {
+		if (search?.trim()?.length > 2) {
 			refetch();
 		}
 	}, [search, refetch]);
 
 	useEffect(() => {
-		onData(data);
-	}, [data, onData]);
+		// if (process.env.NODE_ENV === 'development') {
+		// 	dispatch(setSearchResults(fake));
+		// } else {
+		dispatch(setSearchResults(data));
+		// }
+	}, [data, dispatch]);
+
+	useEffect(() => {
+		if (isError) {
+			console.error(error);
+		}
+	}, [isError, error]);
 
 	const handleSearch = (): void => {
-		if (!isFetching) {
+		if (!isFetching && !isSearchDisabled) {
 			refetch();
 		}
 	};
@@ -50,18 +63,25 @@ const Search = ({ onData }: ISearchProps): React.ReactElement => {
 	return (
 		<Flex>
 			<Input
-				placeholder='Search for players by name'
+				placeholder='Search for players by name (three characters minimum)'
 				value={inputText}
 				onChange={({ target: { value } }) => setInputText(value)}
 			/>
-			<Button
-				ml={2}
-				isLoading={isFetching}
-				variant='solid'
-				onClick={handleSearch}
+			<Tooltip
+				label='At least three characters are required'
+				isDisabled={!isSearchDisabled}
+				shouldWrapChildren
 			>
-				Search
-			</Button>
+				<Button
+					ml={2}
+					isLoading={isFetching && !isError}
+					variant='solid'
+					disabled={isSearchDisabled}
+					onClick={handleSearch}
+				>
+					Search
+				</Button>
+			</Tooltip>
 		</Flex>
 	);
 };

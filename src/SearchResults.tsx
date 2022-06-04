@@ -1,13 +1,19 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { ISearchPlayer } from './api/models';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { AppState, IAppState } from './store/slice';
 
-interface ISearchResultProps {
-	results: ISearchPlayer[];
-}
-const SearchResults = ({ results }: ISearchResultProps): React.ReactElement => {
+const SearchResults = (): React.ReactElement => {
+	const { searchResults } = useSelector(AppState);
+
+	useEffect(() => {
+		console.log(searchResults);
+	}, [searchResults]);
+
 	return (
 		<Flex flexDirection='column' w='280px'>
-			{results.map(({ Name, Years }) => {
+			<span>hello</span>
+			{searchResults?.Data?.map(({ Name, Years }) => {
 				return (
 					<Flex justifyContent='space-between'>
 						<Box>{Name}</Box>

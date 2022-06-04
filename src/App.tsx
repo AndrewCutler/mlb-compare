@@ -13,13 +13,17 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Logo } from './Logo';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Home from './Home';
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 export const App = () => {
 	return (
 		<ChakraProvider theme={theme}>
-			<QueryClientProvider client={new QueryClient()}>
-				<Home />
-			</QueryClientProvider>
+			<Provider store={store}>
+				<QueryClientProvider client={new QueryClient()}>
+					<Home />
+				</QueryClientProvider>
+			</Provider>
 		</ChakraProvider>
 	);
 };

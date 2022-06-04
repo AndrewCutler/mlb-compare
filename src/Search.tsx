@@ -41,11 +41,7 @@ const Search = (): React.ReactElement => {
 	}, [search, refetch]);
 
 	useEffect(() => {
-		// if (process.env.NODE_ENV === 'development') {
-		// 	dispatch(setSearchResults(fake));
-		// } else {
 		dispatch(setSearchResults(data));
-		// }
 	}, [data, dispatch]);
 
 	useEffect(() => {

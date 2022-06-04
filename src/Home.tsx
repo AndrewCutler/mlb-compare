@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react';
-import { useQuery } from 'react-query';
+import { useState } from 'react';
+import { ISearchPlayer, ISearchResult } from './api/models';
 import Search from './Search';
 import SearchResults from './SearchResults';
 
@@ -9,10 +10,16 @@ const Home = (): React.ReactElement => {
 	// 		res.json()
 	// 	)
 	// );
+	const [searchResults, setSearchResults] = useState<ISearchPlayer[]>([]);
+	const handleData = (data: ISearchResult): void => {
+		console.log('Result: ', data);
+		// setSearchResults(data?.Data ?? []);
+	};
 
 	return (
-		<Box>
-			<Search />
+		<Box p={5}>
+			<Search onData={handleData} />
+			<SearchResults results={searchResults} />
 			{/* {isLoading ? (
 				'Loading...'
 			) : isSuccess ? (

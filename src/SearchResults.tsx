@@ -1,11 +1,8 @@
 import { Box, Flex } from '@chakra-ui/react';
-interface SearchResult {
-	Name: string;
-	Years: string;
-}
+import { ISearchPlayer } from './api/models';
 
 interface ISearchResultProps {
-	results: SearchResult[];
+	results: ISearchPlayer[];
 }
 const SearchResults = ({ results }: ISearchResultProps): React.ReactElement => {
 	return (

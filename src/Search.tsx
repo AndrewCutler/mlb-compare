@@ -1,4 +1,4 @@
-import { Input } from '@chakra-ui/react';
+import { Flex, Button, Input } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
@@ -7,12 +7,21 @@ const request = async (name: string) =>
 		res.json()
 	);
 
-const Search = (): React.ReactElement => {
+export interface ISearchProps {
+	onData: (data: any) => void;
+}
+
+const Search = ({ onData }: ISearchProps): React.ReactElement => {
 	const [inputText, setInputText] = useState<string>('');
 	const [search, setSearch] = useState<string>('');
-	const { refetch } = useQuery(['search', search], () => request(search), {
-		enabled: false
-	});
+
+	const { refetch, data, isFetching } = useQuery(
+		['search', search],
+		() => request(search),
+		{
+			enabled: false
+		}
+	);
 
 	useEffect(() => {
 		const timeout = window.setTimeout(() => {
@@ -26,17 +35,34 @@ const Search = (): React.ReactElement => {
 		if (!!search.trim()) {
 			refetch();
 		}
-	}, [search]);
+	}, [search, refetch]);
 
-	const handleSearch = (query: string): void => {
-		setInputText(query);
+	useEffect(() => {
+		onData(data);
+	}, [data, onData]);
+
+	const handleSearch = (): void => {
+		if (!isFetching) {
+			refetch();
+		}
 	};
 
 	return (
-		<Input
-			value={inputText}
-			onChange={({ target: { value } }) => handleSearch(value)}
-		/>
+		<Flex>
+			<Input
+				placeholder='Search for players by name'
+				value={inputText}
+				onChange={({ target: { value } }) => setInputText(value)}
+			/>
+			<Button
+				ml={2}
+				isLoading={isFetching}
+				variant='solid'
+				onClick={handleSearch}
+			>
+				Search
+			</Button>
+		</Flex>
 	);
 };
 

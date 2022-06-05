@@ -1,9 +1,10 @@
-import { Flex, Button, Input, Tooltip } from '@chakra-ui/react';
+import { Button, Flex, Input, Tooltip } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
-import { useDispatch } from 'react-redux';
+
 import { setSearchResults } from './store/slice';
-import fake from './fake.json';
+import { useDispatch } from 'react-redux';
+import { useQuery } from 'react-query';
+import { ISearchResult } from './api/models';
 
 const request = async (name: string) =>
 	fetch(`${process.env.REACT_APP_API ?? ''}/search/${name}`).then((res) =>
@@ -18,13 +19,10 @@ const Search = (): React.ReactElement => {
 
 	const isSearchDisabled = search?.length < 3;
 
-	const { refetch, data, isFetching, isError, error } = useQuery(
-		['search', search],
-		() => request(search),
-		{
+	const { refetch, data, isFetching, isError, error } =
+		useQuery<ISearchResult>(['search', search], () => request(search), {
 			enabled: false
-		}
-	);
+		});
 
 	useEffect(() => {
 		const timeout = window.setTimeout(() => {
@@ -44,17 +42,17 @@ const Search = (): React.ReactElement => {
 		dispatch(setSearchResults(data));
 	}, [data, dispatch]);
 
-	useEffect(() => {
-		if (isError) {
-			console.error(error);
-		}
-	}, [isError, error]);
-
 	const handleSearch = (): void => {
 		if (!isFetching && !isSearchDisabled) {
 			refetch();
 		}
 	};
+
+	useEffect(() => {
+		if (error) {
+			console.log(error);
+		}
+	}, [error]);
 
 	return (
 		<Flex>

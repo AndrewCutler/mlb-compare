@@ -1,9 +1,10 @@
-import { Flex, Button, Input, Tooltip } from '@chakra-ui/react';
+import { Button, Flex, Input, Tooltip } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
-import { useDispatch } from 'react-redux';
-import { setSearchResults } from './store/slice';
+
 import fake from './fake.json';
+import { setSearchResults } from './store/slice';
+import { useDispatch } from 'react-redux';
+import { useQuery } from 'react-query';
 
 const request = async (name: string) =>
 	fetch(`${process.env.REACT_APP_API ?? ''}/search/${name}`).then((res) =>
@@ -41,11 +42,7 @@ const Search = (): React.ReactElement => {
 	}, [search, refetch]);
 
 	useEffect(() => {
-		// if (process.env.NODE_ENV === 'development') {
-		// 	dispatch(setSearchResults(fake));
-		// } else {
 		dispatch(setSearchResults(data));
-		// }
 	}, [data, dispatch]);
 
 	useEffect(() => {

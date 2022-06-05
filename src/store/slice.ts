@@ -1,8 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import { ISearchResult } from '../api/models';
 
 export interface IAppState {
     searchResults: ISearchResult | undefined;
+}
+
+export interface IStore {
+	app: IAppState;
 }
 
 
@@ -15,7 +20,6 @@ export const appSlice = createSlice({
     initialState,
     reducers: {
         setSearchResults: (state, { payload }: PayloadAction<ISearchResult>) => {
-            console.log('in reducer', payload)
             state.searchResults = payload;
 
             return state;
@@ -25,6 +29,6 @@ export const appSlice = createSlice({
 
 export const { setSearchResults } = appSlice.actions;
 
-export const AppState = (state: IAppState) => state;
+export const AppState = (state: IStore) => state.app;
 
 export default appSlice.reducer;

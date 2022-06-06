@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { addSelection, AppState, setSearchResults } from './store/slice';
 import { useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import { IPlayerData } from './api/models';
+import { IPlayerData } from './models/api.models';
 
 const request = async (endpoint: string) =>
 	fetch(`${process.env.REACT_APP_API ?? ''}/stats/${endpoint}`).then((res) =>

@@ -1,15 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { ISearchResult, ISelectionPlayer } from '../api/models';
+import { ISearchResult, ISelectionPlayer } from '../models/api.models';
+import { IStatSelection, STATS } from '../models/local.models';
 
-export interface IStore {
-    app: IAppState;
-}
 
 export interface IAppState {
     searchResults: ISearchResult | undefined;
     selections: ISelectionPlayer[];
-    blank: undefined;
+    stats: IStatSelection;
 }
 
 export interface IStore {
@@ -20,7 +18,7 @@ export interface IStore {
 const initialState: IAppState = {
     searchResults: undefined,
     selections: [],
-    blank: undefined,
+    stats: STATS,
 }
 
 export const appSlice = createSlice({
@@ -39,8 +37,18 @@ export const appSlice = createSlice({
                 ...old,
                 { ...payload }
             ];
+        },
+        toggleStat: (state, { payload }: PayloadAction<string>) => {
+            state.stats.StatSelection = state.stats?.StatSelection.map((stat) => {
+                if (payload === stat.Name) {
+                    return {
+                        ...stat,
+                        IsChecked: !stat.IsChecked,
+                    }
+                }
 
-            // return state;
+                return stat;
+            });
         }
     },
 });

@@ -22,7 +22,7 @@ const Stats = (): React.ReactElement => {
 				{stats.map(({ IsChecked, Name, Label }) => {
 					return (
 						<Checkbox
-							isDisabled={selections && selections.length > 0}
+							isDisabled={!selections || selections.length === 0}
 							isChecked={IsChecked}
 							key={Name}
 							onChange={() => handleChange(Name)}

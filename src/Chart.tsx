@@ -1,9 +1,37 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { Bar, BarChart, CartesianGrid, Legend, XAxis, YAxis } from 'recharts';
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Legend,
+	Tooltip,
+	XAxis,
+	YAxis
+} from 'recharts';
 import { ISelectionPlayer } from './models/api.models';
 
 const COLORS = ['#6088aa', '#c09999', '#55a870'];
+
+const CustomTooltip = ({ payload }: any): React.ReactElement => {
+	console.log(payload);
+	if (payload && payload.length > 0) {
+		return (
+			<Flex
+				flexDirection='column'
+				color='white'
+				textShadow='1px 1px black'
+			>
+				{payload.map(({ name, value }: any) => (
+					<div key={name}>
+						{name}: {value}
+					</div>
+				))}
+			</Flex>
+		);
+	}
+	return <></>;
+};
 
 const createKey = (stat: string, name: string): string =>
 	`${stat}_${name.replaceAll(/\s/g, '_')}`;
@@ -119,7 +147,7 @@ const Chart = ({
 					<CartesianGrid strokeDasharray='5 5' />
 					<XAxis dataKey='Year' />
 					<YAxis />
-					{/* <Tooltip content={<CustomTooltip />} /> */}
+					<Tooltip content={<CustomTooltip />} />
 					<Legend />
 					{chartKeys.map(({ Key, Name }, index) => (
 						<Bar

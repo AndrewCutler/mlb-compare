@@ -53,7 +53,7 @@ export const appSlice = createSlice({
     },
 });
 
-export const { setSearchResults, addSelection } = appSlice.actions;
+export const { setSearchResults, addSelection, toggleStat } = appSlice.actions;
 
 export const AppState = (state: IStore) => state.app;
 

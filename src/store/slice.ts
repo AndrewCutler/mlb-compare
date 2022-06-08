@@ -57,4 +57,6 @@ export const { setSearchResults, addSelection } = appSlice.actions;
 
 export const AppState = (state: IStore) => state.app;
 
+export const selectCheckedStats = (state: IStore) => state.app.stats.StatSelection.filter(({ IsChecked }) => IsChecked);
+
 export default appSlice.reducer;

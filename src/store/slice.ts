@@ -38,6 +38,9 @@ export const appSlice = createSlice({
                 { ...payload }
             ];
         },
+        removeSelection: (state, { payload }: PayloadAction<string>) => {
+            state.selections = state.selections.filter(({ Name }) => Name !== payload);
+        },
         toggleStat: (state, { payload }: PayloadAction<string>) => {
             state.stats.StatSelection = state.stats?.StatSelection.map((stat) => {
                 if (payload === stat.Name) {
@@ -53,7 +56,7 @@ export const appSlice = createSlice({
     },
 });
 
-export const { setSearchResults, addSelection, toggleStat } = appSlice.actions;
+export const { setSearchResults, addSelection, removeSelection, toggleStat } = appSlice.actions;
 
 export const AppState = (state: IStore) => state.app;
 

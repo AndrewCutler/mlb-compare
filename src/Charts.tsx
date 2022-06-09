@@ -8,14 +8,17 @@ const Charts = (): ReactElement => {
 	const stats = useSelector(selectCheckedStats);
 	const { selections } = useSelector(AppState);
 
+	const isDisabled = !selections || selections.length === 0;
+
 	return (
 		<Stack>
-			{stats.map(({ Name }) => (
-				<Box key={Name}>
-					<Text>{Name}</Text>
-					<Chart stat={Name} playerData={selections} />
-				</Box>
-			))}
+			{!isDisabled &&
+				stats.map(({ Name }) => (
+					<Box key={Name}>
+						<Text>{Name}</Text>
+						<Chart stat={Name} playerData={selections} />
+					</Box>
+				))}
 		</Stack>
 	);
 };

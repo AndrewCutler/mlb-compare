@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import Chart from './Chart';
 import Charts from './Charts';
+import Players from './Players';
 import Search from './Search';
 import SearchResults from './SearchResults';
 import Stats from './Stats';
@@ -16,6 +17,7 @@ const Home = (): React.ReactElement => {
 			<Title />
 			<Search />
 			<SearchResults />
+			<Players />
 			<Stats />
 			<Charts />
 			{/* <Chart stat='HomeRun' playerData={selections} /> */}

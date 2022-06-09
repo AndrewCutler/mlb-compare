@@ -5,6 +5,7 @@ import {
 	BarChart,
 	CartesianGrid,
 	Legend,
+	ReferenceLine,
 	Tooltip,
 	XAxis,
 	YAxis
@@ -103,7 +104,6 @@ const Chart = ({
 				)
 			);
 			const names = playerData.map(({ Name }) => Name);
-			// const names = testData.map(({ Name }) => Name);
 
 			const uniqueKeys: IBarKey[] = [];
 
@@ -116,6 +116,7 @@ const Chart = ({
 						Stat: stat,
 						Name: name
 					}));
+
 					for (const { Stat, Name } of nameKeys) {
 						const key = createKey(Stat, Name);
 						if (!uniqueKeys.map(({ Key }) => Key).includes(key)) {
@@ -140,28 +141,38 @@ const Chart = ({
 		}
 	}, [playerData, stat]);
 
-	return (
-		<Box>
-			{chartData?.length > 0 && (
-				<BarChart width={600} height={300} data={chartData}>
-					<CartesianGrid strokeDasharray='5 5' />
-					<XAxis dataKey='Year' />
-					<YAxis />
-					<Tooltip content={<CustomTooltip />} />
-					<Legend />
-					{chartKeys.map(({ Key, Name }, index) => (
-						<Bar
-							dataKey={Key}
-							barSize={30}
-							key={Key}
-							name={Name}
-							fill={COLORS[index]}
-						/>
-					))}
-				</BarChart>
-			)}
-		</Box>
-	);
+	const renderChart = () => {
+		// if (stat === 'WAR') {
+		// 	// negative chart
+		// 	return <></>;
+		// }
+
+		return (
+			<>
+				{chartData?.length > 0 && (
+					<BarChart width={600} height={300} data={chartData}>
+						<CartesianGrid strokeDasharray='5 5' />
+						<XAxis dataKey='Year' />
+						<YAxis />
+						<Tooltip content={<CustomTooltip />} />
+						<Legend />
+						<ReferenceLine y={0} stroke='#eee' />
+						{chartKeys.map(({ Key, Name }, index) => (
+							<Bar
+								dataKey={Key}
+								barSize={30}
+								key={Key}
+								name={Name}
+								fill={COLORS[index]}
+							/>
+						))}
+					</BarChart>
+				)}
+			</>
+		);
+	};
+
+	return <Box>{renderChart()}</Box>;
 };
 
 export default Chart;

@@ -11,18 +11,19 @@ const Stats = (): React.ReactElement => {
 	} = useSelector(AppState);
 
 	const handleChange = (name: string): void => {
-		console.log(name);
 		dispatch(toggleStat(name));
 	};
 
+	const isDisabled = !selections || selections.length === 0;
+
 	return (
-		<Box>
-			<Text>Compare stats</Text>
+		<Box mb={3}>
+			<Text>Choose stats to compare</Text>
 			<Stack spacing={[1, 3]} direction={['column', 'row']}>
 				{stats.map(({ IsChecked, Name, Label }) => {
 					return (
 						<Checkbox
-							isDisabled={!selections || selections.length === 0}
+							isDisabled={isDisabled}
 							isChecked={IsChecked}
 							key={Name}
 							onChange={() => handleChange(Name)}

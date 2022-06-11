@@ -19,12 +19,13 @@ const Stats = (): React.ReactElement => {
 	return (
 		<Box mb={3}>
 			<Text>Choose stats to compare</Text>
-			<Stack spacing={[1, 3]} direction={['column', 'row']}>
+			<Box>
 				{stats.map(({ IsChecked, Name, Label }) => {
 					return (
 						<Checkbox
 							isDisabled={isDisabled}
 							isChecked={IsChecked}
+							mr={5}
 							key={Name}
 							onChange={() => handleChange(Name)}
 						>
@@ -32,7 +33,7 @@ const Stats = (): React.ReactElement => {
 						</Checkbox>
 					);
 				})}
-			</Stack>
+			</Box>
 		</Box>
 	);
 };

@@ -1,4 +1,4 @@
-import { Box, Stack, Text } from '@chakra-ui/react';
+import { Box, Center, Stack, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import Chart from './Chart';
@@ -11,15 +11,17 @@ const Charts = (): ReactElement => {
 	const isDisabled = !selections || selections.length === 0;
 
 	return (
-		<Stack>
+		<Wrap>
 			{!isDisabled &&
 				stats.map(({ Name }) => (
-					<Box key={Name}>
-						<Text>{Name}</Text>
-						<Chart stat={Name} playerData={selections} />
-					</Box>
+					<WrapItem key={Name}>
+						<Center flexDirection='column'>
+							<Text>{Name}</Text>
+							<Chart stat={Name} playerData={selections} />
+						</Center>
+					</WrapItem>
 				))}
-		</Stack>
+		</Wrap>
 	);
 };
 

@@ -1,9 +1,9 @@
+import { AppState, setResetSearch, setSearchResults } from './store/slice';
 import { Button, Flex, Input, Tooltip } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 import { ISearchResult } from './models/api.models';
-import { setSearchResults } from './store/slice';
-import { useDispatch } from 'react-redux';
 import { useQuery } from 'react-query';
 
 const request = async (name: string) =>
@@ -13,16 +13,20 @@ const request = async (name: string) =>
 
 const Search = (): React.ReactElement => {
 	const dispatch = useDispatch();
+	const { resetSearch } = useSelector(AppState);
 
 	const [inputText, setInputText] = useState<string>('');
 	const [search, setSearch] = useState<string>('');
 
 	const isSearchDisabled = search?.length < 3;
 
-	const { refetch, data, isFetching, isError, error } =
-		useQuery<ISearchResult>(['search', search], () => request(search), {
+	const { refetch, data, isFetching, isError } = useQuery<ISearchResult>(
+		['search', search],
+		() => request(search),
+		{
 			enabled: false
-		});
+		}
+	);
 
 	useEffect(() => {
 		const timeout = window.setTimeout(() => {
@@ -31,6 +35,13 @@ const Search = (): React.ReactElement => {
 
 		return () => clearTimeout(timeout);
 	}, [inputText]);
+
+	useEffect(() => {
+		if (resetSearch) {
+			setInputText('');
+			dispatch(setResetSearch(false));
+		}
+	}, [dispatch, resetSearch]);
 
 	useEffect(() => {
 		if (search?.trim()?.length > 2) {
@@ -48,12 +59,6 @@ const Search = (): React.ReactElement => {
 		}
 	};
 
-	useEffect(() => {
-		if (error) {
-			console.log(error);
-		}
-	}, [error]);
-
 	return (
 		<Flex>
 			<Input
@@ -64,15 +69,13 @@ const Search = (): React.ReactElement => {
 			<Tooltip
 				label='At least three characters are required'
 				isDisabled={!isSearchDisabled}
-				shouldWrapChildren
-			>
+				shouldWrapChildren>
 				<Button
 					ml={2}
 					isLoading={isFetching && !isError}
 					variant='solid'
 					disabled={isSearchDisabled}
-					onClick={handleSearch}
-				>
+					onClick={handleSearch}>
 					Search
 				</Button>
 			</Tooltip>

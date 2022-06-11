@@ -28,7 +28,7 @@ const Seasons = (): React.ReactElement => {
 	}, [selections]);
 
 	return (
-		<Box>{overlaps.length > 0 && overlaps.map((year) => <>{year}</>)}</Box>
+		<Box>{overlaps.length > 0 && overlaps.map((year) => <span key={year}>{year}</span>)}</Box>
 	);
 };
 

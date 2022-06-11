@@ -5,61 +5,66 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import appendBattingAverage from '../utils/batting-average';
 
 export interface IAppState {
-    searchResults: ISearchResult | undefined;
-    selections: ISelectionPlayer[];
-    stats: IStatSelection;
+	searchResults: ISearchResult | undefined;
+	selections: ISelectionPlayer[];
+	stats: IStatSelection;
+	resetSearch: boolean;
 }
 
 export interface IStore {
-    app: IAppState;
+	app: IAppState;
 }
 
 const initialState: IAppState = {
-    searchResults: undefined,
-    selections: [],
-    stats: STATS,
+	searchResults: undefined,
+	selections: [],
+	stats: STATS,
+	resetSearch: false,
 }
 
 export const appSlice = createSlice({
-    name: 'app',
-    initialState,
-    reducers: {
-        setSearchResults: (state, { payload }: PayloadAction<ISearchResult | undefined>) => {
-            state.searchResults = payload;
+	name: 'app',
+	initialState,
+	reducers: {
+		setResetSearch: (state, { payload }: PayloadAction<boolean>) => {
+			state.resetSearch = payload;
+		},
+		setSearchResults: (state, { payload }: PayloadAction<ISearchResult | undefined>) => {
+			state.searchResults = payload;
 
-            return state;
-        },
-        addSelection: (state, { payload }: PayloadAction<ISelectionPlayer>) => {
-            const old = state.selections;
+			return state;
+		},
+		addSelection: (state, { payload }: PayloadAction<ISelectionPlayer>) => {
+			const old = state.selections;
 
 			const withBattingAverage = appendBattingAverage(payload);
 
 			console.log(withBattingAverage);
 
-            state.selections = [
-                ...old,
-                { ...withBattingAverage }
-            ];
-        },
-        removeSelection: (state, { payload }: PayloadAction<string>) => {
-            state.selections = state.selections.filter(({ Name }) => Name !== payload);
-        },
-        toggleStat: (state, { payload }: PayloadAction<string>) => {
-            state.stats.StatSelection = state.stats?.StatSelection.map((stat) => {
-                if (payload === stat.Name) {
-                    return {
-                        ...stat,
-                        IsChecked: !stat.IsChecked,
-                    }
-                }
+			state.selections = [
+				...old,
+				{ ...withBattingAverage }
+			];
+		},
+		removeSelection: (state, { payload }: PayloadAction<string>) => {
+			state.selections = state.selections.filter(({ Name }) => Name !== payload);
+		},
+		toggleStat: (state, { payload }: PayloadAction<string>) => {
+			state.stats.StatSelection = state.stats?.StatSelection.map((stat) => {
+				if (payload === stat.Name) {
+					return {
+						...stat,
+						IsChecked: !stat.IsChecked,
+					}
+				}
 
-                return stat;
-            });
-        }
-    },
+				return stat;
+			});
+		}
+	},
 });
 
-export const { setSearchResults, addSelection, removeSelection, toggleStat } = appSlice.actions;
+export const { setResetSearch, setSearchResults, addSelection, removeSelection, toggleStat } = appSlice.actions;
 
 export const AppState = (state: IStore) => state.app;
 

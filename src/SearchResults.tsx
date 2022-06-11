@@ -1,4 +1,4 @@
-import { AppState, addSelection, setSearchResults } from './store/slice';
+import { AppState, addSelection, setResetSearch, setSearchResults } from './store/slice';
 import { Box, List, ListItem, Spinner } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -18,7 +18,8 @@ const SearchResults = (): React.ReactElement => {
 	const [endpoint, setEndpoint] = useState('');
 	const [name, setName] = useState('');
 
-	const { refetch, data, isFetched, isLoading, isError, error } = useQuery<
+	// TODO: add error handling?
+	const { refetch, data, isFetched, isLoading } = useQuery<
 		IPlayerData[]
 	>(['stats', endpoint], () => request(endpoint), {
 		enabled: false
@@ -47,6 +48,7 @@ const SearchResults = (): React.ReactElement => {
 	const handleSelection = (endpoint: string, name: string): void => {
 		setEndpoint(endpoint);
 		setName(name);
+		dispatch(setResetSearch(true));
 	};
 
 	return (

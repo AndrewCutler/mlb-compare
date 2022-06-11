@@ -49,10 +49,6 @@ const SearchResults = (): React.ReactElement => {
 		setName(name);
 	};
 
-	useEffect(() => {
-		console.log(searchResults);
-	}, [searchResults]);
-
 	return (
 		<List display='flex' flexDirection='column' w='280px' mt={1}>
 			{searchResults &&
@@ -61,6 +57,7 @@ const SearchResults = (): React.ReactElement => {
 						return searchResults[key].map(
 							({ Name, Years, Endpoint }) => {
 								return (
+									// TODO: move to SearchResult component
 									<div key={Endpoint}>
 										{(!isLoading ||
 											endpoint === Endpoint) && (

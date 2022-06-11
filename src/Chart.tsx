@@ -8,7 +8,7 @@ import {
 	XAxis,
 	YAxis
 } from 'recharts';
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { RiZoomInLine, RiZoomOutLine } from 'react-icons/ri';
 import { useEffect, useState } from 'react';
 
@@ -17,7 +17,6 @@ import { ISelectionPlayer } from './models/api.models';
 const COLORS = ['#6088aa', '#c09999', '#55a870'];
 
 const CustomTooltip = ({ payload }: any): React.ReactElement => {
-	console.log(payload);
 	if (payload && payload.length > 0) {
 		return (
 			<Flex
@@ -116,8 +115,8 @@ const Chart = ({
 		}
 	}, [playerData, stat]);
 
-	const renderChart = () => {
-		return (
+	return (
+		<Box>
 			<>
 				{chartData?.length > 0 && (
 					<Flex>
@@ -155,10 +154,8 @@ const Chart = ({
 					</Flex>
 				)}
 			</>
-		);
-	};
-
-	return <Box>{renderChart()}</Box>;
+		</Box>
+	);
 };
 
 export default Chart;

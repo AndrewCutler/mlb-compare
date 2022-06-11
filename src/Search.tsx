@@ -42,10 +42,6 @@ const Search = (): React.ReactElement => {
 		dispatch(setSearchResults(data));
 	}, [data, dispatch]);
 
-	useEffect(() => {
-		console.log(data);
-	}, [data]);
-
 	const handleSearch = (): void => {
 		if (!isFetching && !isSearchDisabled) {
 			refetch();

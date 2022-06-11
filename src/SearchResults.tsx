@@ -49,29 +49,50 @@ const SearchResults = (): React.ReactElement => {
 		setName(name);
 	};
 
+	useEffect(() => {
+		console.log(searchResults);
+	}, [searchResults]);
+
 	return (
 		<List display='flex' flexDirection='column' w='280px' mt={3}>
-			{searchResults?.Data?.map(({ Name, Years, Endpoint }) => {
-				return (
-					<div key={Endpoint}>
-						{(!isLoading || endpoint === Endpoint) && (
-							<ListItem
-								display='flex'
-								justifyContent='space-between'
-								cursor='pointer'
-								_hover={{ textDecoration: 'underline' }}
-								onClick={() => handleSelection(Endpoint, Name)}
-							>
-								<Box>{Name}</Box>
-								<Box>{Years}</Box>
-								{isLoading && endpoint === Endpoint && (
-									<Spinner />
-								)}
-							</ListItem>
-						)}
-					</div>
-				);
-			})}
+			{searchResults &&
+				Object.keys(searchResults)
+					.map((key) => {
+						return searchResults[key].map(
+							({ Name, Years, Endpoint }) => {
+								return (
+									<div key={Endpoint}>
+										{(!isLoading ||
+											endpoint === Endpoint) && (
+											<ListItem
+												display='flex'
+												justifyContent='space-between'
+												cursor='pointer'
+												_hover={{
+													textDecoration: 'underline'
+												}}
+												onClick={() =>
+													handleSelection(
+														Endpoint,
+														Name
+													)
+												}
+											>
+												<Box>{Name}</Box>
+												<Box>{Years}</Box>
+												{isLoading &&
+													endpoint === Endpoint && (
+														<Spinner />
+													)}
+											</ListItem>
+										)}
+									</div>
+								);
+							}
+						);
+					})
+					.flat()}
+			);
 		</List>
 	);
 };

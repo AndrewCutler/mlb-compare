@@ -14,7 +14,6 @@ export interface IStore {
     app: IAppState;
 }
 
-
 const initialState: IAppState = {
     searchResults: undefined,
     selections: [],

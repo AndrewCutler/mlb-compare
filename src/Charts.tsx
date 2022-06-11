@@ -1,8 +1,10 @@
-import { Box, Center, Stack, Text, Wrap, WrapItem } from '@chakra-ui/react';
-import { ReactElement } from 'react';
-import { useSelector } from 'react-redux';
-import Chart from './Chart';
 import { AppState, selectCheckedStats } from './store/slice';
+import { Box, Center, Stack, Text, Wrap, WrapItem } from '@chakra-ui/react';
+
+import Chart from './Chart';
+import { ReactElement } from 'react';
+import { mapStatToDisplayName } from './models/local.models';
+import { useSelector } from 'react-redux';
 
 const Charts = (): ReactElement => {
 	const stats = useSelector(selectCheckedStats);
@@ -16,7 +18,7 @@ const Charts = (): ReactElement => {
 				stats.map(({ Name }) => (
 					<WrapItem key={Name}>
 						<Center flexDirection='column'>
-							<Text>{Name}</Text>
+							<Text>{mapStatToDisplayName(Name)}</Text>
 							<Chart stat={Name} playerData={selections} />
 						</Center>
 					</WrapItem>

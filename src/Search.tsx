@@ -1,10 +1,10 @@
 import { Button, Flex, Input, Tooltip } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
+import { ISearchResult } from './models/api.models';
 import { setSearchResults } from './store/slice';
 import { useDispatch } from 'react-redux';
 import { useQuery } from 'react-query';
-import { ISearchResult } from './models/api.models';
 
 const request = async (name: string) =>
 	fetch(`${process.env.REACT_APP_API ?? ''}/search/${name}`).then((res) =>

@@ -1,10 +1,10 @@
+import { AppState, addSelection, setSearchResults } from './store/slice';
 import { Box, List, ListItem, Spinner } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
-import { addSelection, AppState, setSearchResults } from './store/slice';
-import { useQuery } from 'react-query';
-import { useDispatch, useSelector } from 'react-redux';
 import { IPlayerData } from './models/api.models';
+import { useQuery } from 'react-query';
 
 const request = async (endpoint: string) =>
 	fetch(`${process.env.REACT_APP_API ?? ''}/stats/${endpoint}`).then((res) =>
@@ -54,7 +54,7 @@ const SearchResults = (): React.ReactElement => {
 	}, [searchResults]);
 
 	return (
-		<List display='flex' flexDirection='column' w='280px' mt={3}>
+		<List display='flex' flexDirection='column' w='280px' mt={1}>
 			{searchResults &&
 				Object.keys(searchResults)
 					.map((key) => {
@@ -66,8 +66,10 @@ const SearchResults = (): React.ReactElement => {
 											endpoint === Endpoint) && (
 											<ListItem
 												display='flex'
+												p={1}
 												justifyContent='space-between'
 												cursor='pointer'
+												background='whiteAlpha.300'
 												_hover={{
 													textDecoration: 'underline'
 												}}

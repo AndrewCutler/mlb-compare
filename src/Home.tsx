@@ -1,13 +1,13 @@
+import { AppState } from './store/slice';
 import { Box } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
-import Chart from './Chart';
 import Charts from './Charts';
 import Players from './Players';
 import Search from './Search';
 import SearchResults from './SearchResults';
+import Seasons from './Seasons';
 import Stats from './Stats';
-import { AppState } from './store/slice';
 import Title from './Title';
+import { useSelector } from 'react-redux';
 
 const Home = (): React.ReactElement => {
 	const { selections } = useSelector(AppState);
@@ -19,6 +19,7 @@ const Home = (): React.ReactElement => {
 			<SearchResults />
 			<Players />
 			<Stats />
+			<Seasons />
 			<Charts />
 			{/* <Chart stat='HomeRun' playerData={selections} /> */}
 		</Box>

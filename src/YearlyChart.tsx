@@ -52,7 +52,7 @@ const getValueForStatByYear = (
 	)?.Value;
 
 // Need one chart for each stat, or Y-Axis will be skewed
-const Chart = ({
+const YearlyChart = ({
 	stat,
 	playerData
 }: {
@@ -158,4 +158,4 @@ const Chart = ({
 	);
 };
 
-export default Chart;
+export default YearlyChart;

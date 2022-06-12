@@ -13,7 +13,7 @@ export const STATS: IStatSelection = {
 	StatSelection: [
 		{ Name: 'HomeRun', Label: 'HR', IsDisabled: true, IsChecked: true },
 		{ Name: 'Hits', Label: 'H', IsDisabled: true, IsChecked: true },
-		{ Name: 'WAR', Label: 'WAR', IsDisabled: true, IsChecked: true },
+		{ Name: 'WAR', Label: 'WAR', IsDisabled: true, IsChecked: false },
 		{ Name: 'Games', Label: 'G', IsDisabled: false, IsChecked: false },
 		{ Name: 'PlateAppearances', Label: 'PA', IsDisabled: false, IsChecked: false },
 		{ Name: 'AtBats', Label: 'AB', IsDisabled: false, IsChecked: false },

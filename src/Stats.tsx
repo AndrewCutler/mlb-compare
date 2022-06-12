@@ -1,6 +1,6 @@
-import { Box, Checkbox, Text, Stack } from '@chakra-ui/react';
-import { useDispatch, useSelector } from 'react-redux';
 import { AppState, toggleStat } from './store/slice';
+import { Box, Checkbox, Stack, Text } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Stats = (): React.ReactElement => {
 	const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const Stats = (): React.ReactElement => {
 				{stats.map(({ IsChecked, Name, Label }) => {
 					return (
 						<Checkbox
-							isDisabled={isDisabled}
+							isDisabled={isDisabled || Name === 'WAR'}
 							isChecked={IsChecked}
 							mr={5}
 							key={Name}

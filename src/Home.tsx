@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import Charts from './Charts';
+import ChartTabset from './ChartTabset';
 import Players from './Players';
 import Search from './Search';
 import SearchResults from './SearchResults';
@@ -15,7 +15,7 @@ const Home = (): React.ReactElement => {
 			<Players />
 			<Stats />
 			{/* <Seasons /> */}
-			<Charts />
+			<ChartTabset />
 			{/* <Chart stat='HomeRun' playerData={selections} /> */}
 		</Box>
 	);

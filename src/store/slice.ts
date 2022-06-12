@@ -2,7 +2,7 @@ import { ISearchResult, ISelectionPlayer } from '../models/api.models';
 import { IStatSelection, STATS } from '../models/local.models';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import appendBattingAverage from '../utils/batting-average';
+import { buildRateStats } from '../utils/rate-stats';
 
 export interface IAppState {
 	searchResults: ISearchResult | undefined;
@@ -37,13 +37,13 @@ export const appSlice = createSlice({
 		addSelection: (state, { payload }: PayloadAction<ISelectionPlayer>) => {
 			const old = state.selections;
 
-			const withBattingAverage = appendBattingAverage(payload);
 
-			console.log(withBattingAverage);
+			const withRateStats = buildRateStats(payload);
+			console.log(withRateStats);
 
 			state.selections = [
 				...old,
-				{ ...withBattingAverage }
+				{ ...withRateStats }
 			];
 		},
 		removeSelection: (state, { payload }: PayloadAction<string>) => {

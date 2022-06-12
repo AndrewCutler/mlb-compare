@@ -1,12 +1,12 @@
 import { AppState, selectCheckedStats } from './store/slice';
-import { Box, Center, Stack, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import { Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
 
-import Chart from './Chart';
 import { ReactElement } from 'react';
+import YearlyChart from './YearlyChart';
 import { mapStatToDisplayName } from './models/local.models';
 import { useSelector } from 'react-redux';
 
-const Charts = (): ReactElement => {
+const YearlyChartTab = ({ children }: any): ReactElement => {
 	const stats = useSelector(selectCheckedStats);
 	const { selections } = useSelector(AppState);
 
@@ -19,7 +19,8 @@ const Charts = (): ReactElement => {
 					<WrapItem key={Name}>
 						<Center flexDirection='column'>
 							<Text>{mapStatToDisplayName(Name)}</Text>
-							<Chart stat={Name} playerData={selections} />
+							{children}
+							<YearlyChart stat={Name} playerData={selections} />
 						</Center>
 					</WrapItem>
 				))}
@@ -27,4 +28,4 @@ const Charts = (): ReactElement => {
 	);
 };
 
-export default Charts;
+export default YearlyChartTab;

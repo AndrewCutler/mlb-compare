@@ -26,7 +26,7 @@ const SearchResults = (): React.ReactElement => {
 	});
 
 	useEffect(() => {
-		// doesn't make additional requests
+		// doesn't make additional requests?
 		if (!isFetched && endpoint) {
 			refetch();
 		}

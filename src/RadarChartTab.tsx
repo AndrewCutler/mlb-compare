@@ -10,14 +10,12 @@ import {
 import { AppState } from './store/slice';
 import { IPlayerData } from './models/api.models';
 import { Wrap } from '@chakra-ui/react';
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const mapToChartData = (data: IPlayerData[]) => {
 	const average =
-		data
-			.find(({ Year }) => Year === 'Career')
-			?.Stats.find(({ Name }) => Name === 'BattingAverage')?.Value ?? 0;
+		data.find(({ Year }) => Year === 'Career')?.Stats['BattingAverage'] ??
+		0;
 
 	return [
 		{
@@ -28,7 +26,7 @@ const mapToChartData = (data: IPlayerData[]) => {
 		{
 			subject: 'OBP',
 			Player: (average + 0.09) * 1000,
-			fullMark:650
+			fullMark: 650
 		},
 		{
 			subject: 'wRC',
@@ -45,9 +43,10 @@ const RadarChartTab = (): React.ReactElement => {
 		<Wrap>
 			{selections &&
 				selections.length > 0 &&
-				selections.map(({ Data }) => {
+				selections.map(({ Data, Name }) => {
 					return (
 						<RadarChart
+							key={Name}
 							outerRadius={90}
 							width={730}
 							height={300}
@@ -60,7 +59,7 @@ const RadarChartTab = (): React.ReactElement => {
 								dataKey='Player'
 								stroke='#8884d8'
 								fill='#8884d8'
-								fillOpacity={0.6}
+								fillOpacity={0.75}
 							/>
 							<Legend />
 						</RadarChart>

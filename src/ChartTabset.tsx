@@ -5,7 +5,7 @@ import YearlyChartTab from './YearlyChartTab';
 
 const ChartTabset = (): React.ReactElement => {
 	return (
-		<Tabs isFitted>
+		<Tabs isLazy isFitted>
 			<TabList>
 				<Tab>Yearly</Tab>
 				<Tab>Radar charts</Tab>

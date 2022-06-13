@@ -18,6 +18,7 @@ const COLORS = ['#6088aa', '#c09999', '#55a870'];
 
 const CustomTooltip = ({ payload }: any): React.ReactElement => {
 	if (payload && payload.length > 0) {
+		console.log(payload);
 		return (
 			<Flex
 				flexDirection='column'
@@ -42,14 +43,12 @@ interface IBarKey {
 	Name: string;
 }
 
-const getValueForStatByYear = (
+const getValueForStatByAge = (
 	player: ISelectionPlayer,
-	year: string,
+	age: string,
 	stat: string
 ): number | undefined =>
-	player.Data.find(({ Year }) => Year === year)?.Stats.find(
-		({ Name }) => Name === stat
-	)?.Value;
+	player.Data.find(({ Age }) => Age === age)?.Stats[stat];
 
 // Need one chart for each stat, or Y-Axis will be skewed
 const YearlyChart = ({
@@ -70,10 +69,16 @@ const YearlyChart = ({
 				{} as { [key: string]: ISelectionPlayer }
 			);
 
-			const years = Array.from(
+			// TODO: fix producing duplicates for ages both players share
+			const rows = Array.from(
 				new Set(
 					playerData
-						.map((player) => player.Data.map(({ Year }) => Year))
+						.map((player) =>
+							player.Data.map(({ Age, Year }) => ({
+								Age,
+								Year
+							}))
+						)
 						.flat()
 				)
 			);
@@ -81,10 +86,10 @@ const YearlyChart = ({
 
 			const uniqueKeys: IBarKey[] = [];
 
-			const _chartData = years
-				.map((year) => {
-					// interface { Year: string; [key in keyof Stats]: any }  (?)
-					const result: any = { Year: year };
+			const _chartData = rows
+				.map((row) => {
+					// interface { Age: string; Year: string; [key in keyof Stats]: any }  (?)
+					const result: any = row;
 
 					const nameKeys = names.map((name) => ({
 						Stat: stat,
@@ -97,18 +102,16 @@ const YearlyChart = ({
 							uniqueKeys.push({ Key: key, Name });
 						}
 
-						result[key] = getValueForStatByYear(
+						result[key] = getValueForStatByAge(
 							nameToData[Name],
-							year,
+							row.Age,
 							stat
 						);
 					}
 
 					return result;
 				})
-				.sort(({ Year: YearA }, { Year: YearB }) =>
-					YearA > YearB ? 1 : -1
-				);
+				.sort(({ Age: AgeA }, { Age: AgeB }) => (AgeA > AgeB ? 1 : -1));
 
 			setChartData(_chartData);
 			setChartKeys(uniqueKeys);
@@ -125,7 +128,7 @@ const YearlyChart = ({
 							height={isZoomed ? 500 : 300}
 							data={chartData}>
 							<CartesianGrid strokeDasharray='5 5' />
-							<XAxis dataKey='Year' />
+							<XAxis dataKey='Age' />
 							<YAxis />
 							<Tooltip content={<CustomTooltip />} />
 							<Legend />

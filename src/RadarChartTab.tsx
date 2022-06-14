@@ -8,13 +8,13 @@ import {
 } from 'recharts';
 
 import { AppState } from './store/slice';
-import { IPlayerData } from './models/api.models';
+import { IPlayerStats } from './models/api.models';
 import { Wrap } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
-const mapToChartData = (data: IPlayerData[]) => {
+const mapToChartData = (data: IPlayerStats) => {
 	const average =
-		data.find(({ Year }) => Year === 'Career')?.Stats['BattingAverage'] ??
+		data['Career']?.Stats['BattingAverage'] ??
 		0;
 
 	return [
@@ -43,14 +43,14 @@ const RadarChartTab = (): React.ReactElement => {
 		<Wrap>
 			{selections &&
 				selections.length > 0 &&
-				selections.map(({ Data, Name }) => {
+				selections.map(({ StatsByAge, Name }) => {
 					return (
 						<RadarChart
 							key={Name}
 							outerRadius={90}
 							width={730}
 							height={300}
-							data={mapToChartData(Data)}>
+							data={mapToChartData(StatsByAge)}>
 							<PolarGrid />
 							<PolarAngleAxis dataKey='subject' />
 							<PolarRadiusAxis angle={30} domain={[0, 750]} />

@@ -3,7 +3,7 @@ import { Box, List, ListItem, Spinner } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
-import { IPlayerData } from './models/api.models';
+import { IPlayerStats } from './models/api.models';
 import { useQuery } from 'react-query';
 
 const request = async (endpoint: string) =>
@@ -20,7 +20,7 @@ const SearchResults = (): React.ReactElement => {
 
 	// TODO: add error handling?
 	const { refetch, data, isFetched, isLoading } = useQuery<
-		IPlayerData[]
+		IPlayerStats
 	>(['stats', endpoint], () => request(endpoint), {
 		enabled: false
 	});
@@ -37,7 +37,7 @@ const SearchResults = (): React.ReactElement => {
 			dispatch(
 				addSelection({
 					Name: name,
-					Data: data
+					StatsByAge: data
 				})
 			);
 			setName('');

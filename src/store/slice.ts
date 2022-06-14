@@ -39,7 +39,6 @@ export const appSlice = createSlice({
 
 
 			const withRateStats = buildRateStats(payload);
-			console.log(withRateStats);
 
 			state.selections = [
 				...old,

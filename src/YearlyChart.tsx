@@ -16,17 +16,20 @@ import { ISelectionPlayer } from './models/api.models';
 
 const COLORS = ['#6088aa', '#c09999', '#55a870'];
 
-const CustomTooltip = ({ payload }: any): React.ReactElement => {
-	if (payload && payload.length > 0) {
-		console.log(payload);
+const CustomTooltip = ({
+	payload: tooltipPayload
+}: any): React.ReactElement => {
+	if (tooltipPayload && tooltipPayload.length > 0) {
+		console.log(tooltipPayload);
 		return (
 			<Flex
 				flexDirection='column'
 				color='white'
 				textShadow='1px 1px black'>
-				{payload.map(({ name, value }: any) => (
+				{tooltipPayload.map(({ payload, name, value }: any) => (
 					<div key={name}>
-						{name}: {value}
+						{name} ({payload.Year}
+						): {value}
 					</div>
 				))}
 			</Flex>
@@ -47,8 +50,7 @@ const getValueForStatByAge = (
 	player: ISelectionPlayer,
 	age: string,
 	stat: string
-): number | undefined =>
-	player.Data.find(({ Age }) => Age === age)?.Stats[stat];
+): number | undefined => player.StatsByAge[age]?.Stats[stat];
 
 // Need one chart for each stat, or Y-Axis will be skewed
 const YearlyChart = ({
@@ -70,31 +72,29 @@ const YearlyChart = ({
 			);
 
 			// TODO: fix producing duplicates for ages both players share
-			const rows = Array.from(
+			// because it's not setting year/age pairs correctly
+			// step 1: new Set(all ages from both players)
+			// step 2: for each age, set year and data
+			const uniqueAges = Array.from(
 				new Set(
 					playerData
-						.map((player) =>
-							player.Data.map(({ Age, Year }) => ({
-								Age,
-								Year
-							}))
-						)
+						.map(({ StatsByAge }) => Object.keys(StatsByAge))
 						.flat()
 				)
 			);
-			const names = playerData.map(({ Name }) => Name);
+			console.log(uniqueAges);
+
+			const nameKeys = playerData.map(({ Name }) => ({
+				Stat: stat,
+				Name
+			}));
 
 			const uniqueKeys: IBarKey[] = [];
 
-			const _chartData = rows
-				.map((row) => {
+			const _chartData = uniqueAges
+				.map((age) => {
 					// interface { Age: string; Year: string; [key in keyof Stats]: any }  (?)
-					const result: any = row;
-
-					const nameKeys = names.map((name) => ({
-						Stat: stat,
-						Name: name
-					}));
+					const result: any = { Age: age };
 
 					for (const { Stat, Name } of nameKeys) {
 						const key = createKey(Stat, Name);
@@ -104,7 +104,7 @@ const YearlyChart = ({
 
 						result[key] = getValueForStatByAge(
 							nameToData[Name],
-							row.Age,
+							age,
 							stat
 						);
 					}

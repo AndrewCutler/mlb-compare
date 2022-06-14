@@ -1,4 +1,4 @@
-import { IPlayerData, ISelectionPlayer, IStats } from '../models/api.models';
+import { IPlayerStats, ISeasonStats, ISelectionPlayer, IStats } from '../models/api.models';
 
 export const buildRateStats = (playerData: ISelectionPlayer): ISelectionPlayer => {
 	const withBattingAverageYearly = appendYearlyBattingAverage(playerData);
@@ -21,39 +21,40 @@ export const buildRateStats = (playerData: ISelectionPlayer): ISelectionPlayer =
 // }
 
 const appendYearlyBattingAverage = (playerData: ISelectionPlayer): ISelectionPlayer => {
-	for (let year of playerData.Data) {
-		year = {
-			...year, Stats: {
-				...year.Stats, 'BattingAverage': buildYearlyBattingAverage(year)
+	for (const age of Object.keys(playerData.StatsByAge)) {
+		playerData.StatsByAge[age] = {
+			...playerData.StatsByAge[age],
+			Stats: {
+				...playerData.StatsByAge[age].Stats, 'BattingAverage': buildYearlyBattingAverage(playerData.StatsByAge[age])
 			}
 		};
 	}
 	return playerData;
 }
 
-const calculateCareerBattingAverage = (playerData: ISelectionPlayer): IStats => {
-	const hitsTotal: number = playerData.Data.reduce((prev, curr) => {
-		return prev = prev + getStatValue(curr.Stats, 'Hits');
-	}, 0);
-	const atBatsTotal: number = playerData.Data.reduce((prev, curr) => {
-		return prev = prev + getStatValue(curr.Stats, 'AtBats');
-	}, 0);
+// const calculateCareerBattingAverage = (playerData: ISelectionPlayer): IStats => {
+// 	const hitsTotal: number = playerData.Data.reduce((prev, curr) => {
+// 		return prev = prev + getStatValue(curr.Stats, 'Hits');
+// 	}, 0);
+// 	const atBatsTotal: number = playerData.Data.reduce((prev, curr) => {
+// 		return prev = prev + getStatValue(curr.Stats, 'AtBats');
+// 	}, 0);
 
-	return { 'BattingAverage': calculateBattingAverage(hitsTotal, atBatsTotal) }
-}
+// 	return { 'BattingAverage': calculateBattingAverage(hitsTotal, atBatsTotal) }
+// }
 
 const getStatValue = (stats: IStats, statName: string): number => Number(stats[statName]);
 
 const calculateBattingAverage = (hits: number, atBats: number): number => parseFloat((hits / atBats).toFixed(3));
 
-const buildYearlyBattingAverage = (data: IPlayerData): number => {
-	const hits = getStatValue(data.Stats, 'Hits');
-	const atBats = getStatValue(data.Stats, 'AtBats');
+const buildYearlyBattingAverage = (season: ISeasonStats): number => {
+	const hits = getStatValue(season.Stats, 'Hits');
+	const atBats = getStatValue(season.Stats, 'AtBats');
 
 	return calculateBattingAverage(hits, atBats);
 }
 
-const buildYearlyOnBasePercentage = (data: IPlayerData): number => {
+const buildYearlyOnBasePercentage = (data: IPlayerStats): number => {
 	// need HitByPitch from scraper
 	return 0;
 }

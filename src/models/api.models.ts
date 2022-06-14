@@ -8,16 +8,19 @@ export interface ISearchPlayer {
 	Years: string;
 }
 
+export interface ISeasonStats {
+	Year: string;
+	Stats: IStats;
+}
+
 
 export interface ISelectionPlayer {
 	Name: string;
-	Data: IPlayerData[];
+	StatsByAge: IPlayerStats;
 }
 
-export interface IPlayerData {
-	Year: string;
-	Age: string;
-	Stats: IStats;
+export interface IPlayerStats {
+	[age: string]: ISeasonStats;
 }
 
 export interface IStats {

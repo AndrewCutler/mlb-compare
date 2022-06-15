@@ -8,33 +8,9 @@ import {
 } from 'recharts';
 
 import { AppState } from './store/slice';
-import { IPlayerStats } from './models/api.models';
 import { Wrap } from '@chakra-ui/react';
+import { mapToChartData } from './utils/chart.radar';
 import { useSelector } from 'react-redux';
-
-const mapToChartData = (data: IPlayerStats) => {
-	const average =
-		data['Career']?.Stats['BattingAverage'] ??
-		0;
-
-	return [
-		{
-			subject: 'Batting Average',
-			Player: average * 1000,
-			fullMark: 500
-		},
-		{
-			subject: 'OBP',
-			Player: (average + 0.09) * 1000,
-			fullMark: 650
-		},
-		{
-			subject: 'wRC',
-			Player: 170,
-			fullMark: 350
-		}
-	];
-};
 
 const RadarChartTab = (): React.ReactElement => {
 	const { selections } = useSelector(AppState);
@@ -47,16 +23,21 @@ const RadarChartTab = (): React.ReactElement => {
 					return (
 						<RadarChart
 							key={Name}
-							outerRadius={90}
+							outerRadius={120}
 							width={730}
 							height={300}
-							data={mapToChartData(StatsByAge)}>
+							// TODO: allow selection of seasons/ages to build stats for
+							data={mapToChartData(StatsByAge, [], Name)}>
 							<PolarGrid />
-							<PolarAngleAxis dataKey='subject' />
-							<PolarRadiusAxis angle={30} domain={[0, 750]} />
+							<PolarAngleAxis dataKey='stat' />
+							<PolarRadiusAxis
+								angle={45}
+								type='number'
+								// domain={[0, 500]}
+							/>
 							<Radar
-								name='Mike'
-								dataKey='Player'
+								name={Name}
+								dataKey={Name}
 								stroke='#8884d8'
 								fill='#8884d8'
 								fillOpacity={0.75}

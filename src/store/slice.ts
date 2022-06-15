@@ -37,12 +37,9 @@ export const appSlice = createSlice({
 		addSelection: (state, { payload }: PayloadAction<ISelectionPlayer>) => {
 			const old = state.selections;
 
-
-			const withRateStats = buildRateStats(payload);
-
 			state.selections = [
 				...old,
-				{ ...withRateStats }
+				{ ...payload }
 			];
 		},
 		removeSelection: (state, { payload }: PayloadAction<string>) => {

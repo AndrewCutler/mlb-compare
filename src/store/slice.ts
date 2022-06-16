@@ -45,7 +45,7 @@ export const appSlice = createSlice({
 		},
 		toggleStat: (state, { payload }: PayloadAction<string>) => {
 			state.stats = state.stats?.map((stat) => {
-				if (payload === stat.Name) {
+				if (payload === stat.Label) {
 					return {
 						...stat,
 						IsChecked: !stat.IsChecked,

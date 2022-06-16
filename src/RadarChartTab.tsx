@@ -8,14 +8,15 @@ import {
 } from 'recharts';
 
 import { AppState } from './store/slice';
+import { COLORS } from './utils/colors';
 import { Wrap } from '@chakra-ui/react';
 import { mapToChartData } from './utils/chart.radar';
 import { useSelector } from 'react-redux';
 
 const defaultStats = [
-	{ Name: 'BattingAverage', Label: 'batting_avg', IsDisabled: false, IsChecked: false },
-	{ Name: 'OnBasePercentage', Label: 'onbase_perc', IsDisabled: false, IsChecked: false },
-	{ Name: 'Slugging', Label: 'slugging_prec', IsDisabled: false, IsChecked: false },
+	{ DisplayLabel: 'BA', Label: 'batting_avg', IsDisabled: false, IsChecked: false },
+	{ DisplayLabel: 'OBP', Label: 'onbase_perc', IsDisabled: false, IsChecked: false },
+	{ DisplayLabel: 'SLG', Label: 'slugging_perc', IsDisabled: false, IsChecked: false },
 ];
 
 const RadarChartTab = (): React.ReactElement => {
@@ -24,8 +25,9 @@ const RadarChartTab = (): React.ReactElement => {
 	return (
 		<Wrap>
 			{selections &&
+			// TODO: map to Radar, not RadarChart
 				selections.length > 0 &&
-				selections.map(({ StatsByAge, Name }) => {
+				selections.map(({ StatsByAge, Name }, index) => {
 					return (
 						<RadarChart
 							key={Name}
@@ -44,8 +46,8 @@ const RadarChartTab = (): React.ReactElement => {
 							<Radar
 								name={Name}
 								dataKey={Name}
-								stroke='#8884d8'
-								fill='#8884d8'
+								stroke={COLORS[index]}
+								fill={COLORS[index]}
 								fillOpacity={0.75}
 							/>
 							<Legend />

@@ -1,6 +1,5 @@
 import { IPlayerStats } from '../models/api.models';
 import { IStatSelection } from '../models/local.models';
-import { mapStatToDisplayName } from './../models/local.models';
 
 export const mapToChartData = (data: IPlayerStats, stats: IStatSelection, ages: number[], playerName: string) => {
 	console.log(data);
@@ -33,9 +32,9 @@ export const mapToChartData = (data: IPlayerStats, stats: IStatSelection, ages: 
 		const result = stats.map(stat => {
 			const value = career.Stats[stat.Label];
 			return {
-				stat: mapStatToDisplayName(stat.Name),
+				stat: stat.DisplayLabel,
 				[playerName]: value,
-				fullMark: value * 1.15
+				fullMark: stat.FullMark
 			}
 		});
 

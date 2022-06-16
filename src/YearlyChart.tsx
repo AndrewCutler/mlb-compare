@@ -13,9 +13,8 @@ import { RiZoomInLine, RiZoomOutLine } from 'react-icons/ri';
 import { buildYearlyChartData, getTooltipYear } from './utils/chart.yearly';
 import { useEffect, useState } from 'react';
 
+import { COLORS } from './utils/colors';
 import { ISelectionPlayer } from './models/api.models';
-
-const COLORS = ['#6088aa', '#c09999', '#55a870', '#89ddc0'];
 
 const CustomTooltip = ({
 	payload: tooltipPayload

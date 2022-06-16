@@ -29,7 +29,6 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 		{} as { [name: string]: string }
 	);
 
-
 	const uniqueKeys: IBarKey[] = [];
 
 	const chartData = uniqueAges
@@ -40,6 +39,7 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 				if (player.StatsByAge[age]) {
 					const id = playerToId[player.Name];
 					const statKey = createKey(stat, id);
+					console.log(player.StatsByAge[age])
 					if (
 						!uniqueKeys.map(({ Key }) => Key).includes(statKey)
 					) {

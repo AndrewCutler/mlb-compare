@@ -3,7 +3,6 @@ import { Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
 
 import { ReactElement } from 'react';
 import YearlyChart from './YearlyChart';
-import { mapStatToDisplayName } from './models/local.models';
 import { useSelector } from 'react-redux';
 
 const YearlyChartTab = ({ children }: any): ReactElement => {
@@ -15,12 +14,12 @@ const YearlyChartTab = ({ children }: any): ReactElement => {
 	return (
 		<Wrap>
 			{!isDisabled &&
-				stats.map(({ Name }) => (
-					<WrapItem key={Name}>
+				stats.map(({ Label, DisplayLabel }) => (
+					<WrapItem key={Label}>
 						<Center flexDirection='column'>
-							<Text>{mapStatToDisplayName(Name)}</Text>
+							<Text>{DisplayLabel}</Text>
 							{children}
-							<YearlyChart stat={Name} playerData={selections} />
+							<YearlyChart stat={Label} playerData={selections} />
 						</Center>
 					</WrapItem>
 				))}

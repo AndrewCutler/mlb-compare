@@ -2,8 +2,6 @@ import { ISearchResult, ISelectionPlayer } from '../models/api.models';
 import { IStatSelection, STATS } from '../models/local.models';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { buildRateStats } from '../utils/rate-stats';
-
 export interface IAppState {
 	searchResults: ISearchResult | undefined;
 	selections: ISelectionPlayer[];
@@ -46,7 +44,7 @@ export const appSlice = createSlice({
 			state.selections = state.selections.filter(({ Name }) => Name !== payload);
 		},
 		toggleStat: (state, { payload }: PayloadAction<string>) => {
-			state.stats.StatSelection = state.stats?.StatSelection.map((stat) => {
+			state.stats = state.stats?.map((stat) => {
 				if (payload === stat.Name) {
 					return {
 						...stat,
@@ -64,6 +62,6 @@ export const { setResetSearch, setSearchResults, addSelection, removeSelection, 
 
 export const AppState = (state: IStore) => state.app;
 
-export const selectCheckedStats = (state: IStore) => state.app.stats.StatSelection.filter(({ IsChecked }) => IsChecked);
+export const selectCheckedStats = (state: IStore) => state.app.stats.filter(({ IsChecked }) => IsChecked);
 
 export default appSlice.reducer;

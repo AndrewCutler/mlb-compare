@@ -12,6 +12,12 @@ import { Wrap } from '@chakra-ui/react';
 import { mapToChartData } from './utils/chart.radar';
 import { useSelector } from 'react-redux';
 
+const defaultStats = [
+	{ Name: 'BattingAverage', Label: 'batting_avg', IsDisabled: false, IsChecked: false },
+	{ Name: 'OnBasePercentage', Label: 'onbase_perc', IsDisabled: false, IsChecked: false },
+	{ Name: 'Slugging', Label: 'slugging_prec', IsDisabled: false, IsChecked: false },
+];
+
 const RadarChartTab = (): React.ReactElement => {
 	const { selections } = useSelector(AppState);
 
@@ -27,7 +33,7 @@ const RadarChartTab = (): React.ReactElement => {
 							width={730}
 							height={300}
 							// TODO: allow selection of seasons/ages to build stats for
-							data={mapToChartData(StatsByAge, [], Name)}>
+							data={mapToChartData(StatsByAge, defaultStats, [], Name)}>
 							<PolarGrid />
 							<PolarAngleAxis dataKey='stat' />
 							<PolarRadiusAxis

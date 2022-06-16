@@ -6,7 +6,7 @@ const Stats = (): React.ReactElement => {
 	const dispatch = useDispatch();
 
 	const {
-		stats: { StatSelection: stats },
+		stats,
 		selections
 	} = useSelector(AppState);
 
@@ -20,7 +20,7 @@ const Stats = (): React.ReactElement => {
 		<Box mb={3}>
 			<Text>Choose stats to compare</Text>
 			<Box>
-				{stats.map(({ IsChecked, Name, Label }) => {
+				{stats.map(({ IsChecked, Name, Label, DisplayLabel }) => {
 					return (
 						<Checkbox
 							isDisabled={isDisabled || Name === 'WAR'}
@@ -29,7 +29,7 @@ const Stats = (): React.ReactElement => {
 							key={Name}
 							onChange={() => handleChange(Name)}
 						>
-							{Label}
+							{DisplayLabel ?? Label}
 						</Checkbox>
 					);
 				})}

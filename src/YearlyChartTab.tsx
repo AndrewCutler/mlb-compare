@@ -11,6 +11,8 @@ const YearlyChartTab = ({ children }: any): ReactElement => {
 
 	const isDisabled = !selections || selections.length === 0;
 
+	// TODO: add checkbox to toggle career stats
+	
 	return (
 		<Wrap>
 			{!isDisabled &&

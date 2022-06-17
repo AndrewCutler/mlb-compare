@@ -14,9 +14,24 @@ import { mapToChartData } from './utils/chart.radar';
 import { useSelector } from 'react-redux';
 
 const defaultStats = [
-	{ DisplayLabel: 'BA', Label: 'batting_avg', IsDisabled: false, IsChecked: false },
-	{ DisplayLabel: 'OBP', Label: 'onbase_perc', IsDisabled: false, IsChecked: false },
-	{ DisplayLabel: 'SLG', Label: 'slugging_perc', IsDisabled: false, IsChecked: false },
+	{
+		DisplayLabel: 'BA',
+		Label: 'batting_avg',
+		IsDisabled: false,
+		IsChecked: false
+	},
+	{
+		DisplayLabel: 'OBP',
+		Label: 'onbase_perc',
+		IsDisabled: false,
+		IsChecked: false
+	},
+	{
+		DisplayLabel: 'SLG',
+		Label: 'slugging_perc',
+		IsDisabled: false,
+		IsChecked: false
+	}
 ];
 
 const RadarChartTab = (): React.ReactElement => {
@@ -24,7 +39,29 @@ const RadarChartTab = (): React.ReactElement => {
 
 	return (
 		<Wrap>
-			{selections &&
+			<RadarChart
+				outerRadius={120}
+				width={730}
+				height={300}
+				// TODO: allow selection of seasons/ages to build stats for
+				data={mapToChartData(selections, defaultStats, [])}>
+				<PolarGrid />
+				<PolarAngleAxis dataKey='stat' />
+				<PolarRadiusAxis angle={45} type='number' domain={[0, 0.9]} />
+				{selections.map(({ Name }, index) => {
+					return (
+						<Radar
+							name={Name}
+							dataKey={Name}
+							stroke={COLORS[index]}
+							fill={COLORS[index]}
+							fillOpacity={0.75}
+						/>
+					);
+				})}
+				<Legend />
+			</RadarChart>
+			{/* {selections &&
 			// TODO: map to Radar, not RadarChart
 				selections.length > 0 &&
 				selections.map(({ StatsByAge, Name }, index) => {
@@ -41,7 +78,7 @@ const RadarChartTab = (): React.ReactElement => {
 							<PolarRadiusAxis
 								angle={45}
 								type='number'
-								// domain={[0, 500]}
+								domain={[0, .9]}
 							/>
 							<Radar
 								name={Name}
@@ -53,7 +90,7 @@ const RadarChartTab = (): React.ReactElement => {
 							<Legend />
 						</RadarChart>
 					);
-				})}
+				})} */}
 		</Wrap>
 	);
 };

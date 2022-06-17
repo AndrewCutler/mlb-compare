@@ -52,49 +52,50 @@ const SearchResults = (): React.ReactElement => {
 	};
 
 	return (
-		<List display='flex' flexDirection='column' w='280px' mt={1}>
-			{searchResults &&
-				Object.keys(searchResults)
-					.map((key) => {
-						return searchResults[key].map(
-							({ Name, Years, Endpoint }) => {
-								return (
-									// TODO: move to SearchResult component
-									<div key={Endpoint}>
-										{(!isLoading ||
-											endpoint === Endpoint) && (
-											<ListItem
-												display='flex'
-												p={1}
-												justifyContent='space-between'
-												cursor='pointer'
-												background='whiteAlpha.300'
-												_hover={{
-													textDecoration: 'underline'
-												}}
-												onClick={() =>
-													handleSelection(
-														Endpoint,
-														Name
-													)
-												}
-											>
-												<Box>{Name}</Box>
-												<Box>{Years}</Box>
-												{isLoading &&
-													endpoint === Endpoint && (
-														<Spinner />
-													)}
-											</ListItem>
-										)}
-									</div>
-								);
-							}
-						);
-					})
-					.flat()}
-			);
-		</List>
+		// <List display='flex' flexDirection='column' w='280px' mt={1}>
+		// 	{searchResults &&
+		// 		Object.keys(searchResults)
+		// 			.map((key) => {
+		// 				return searchResults[key].map(
+		// 					({ Name, Years, Endpoint }) => {
+		// 						return (
+		// 							// TODO: move to SearchResult component
+		// 							<div key={Endpoint}>
+		// 								{(!isLoading ||
+		// 									endpoint === Endpoint) && (
+		// 									<ListItem
+		// 										display='flex'
+		// 										p={1}
+		// 										justifyContent='space-between'
+		// 										cursor='pointer'
+		// 										background='whiteAlpha.300'
+		// 										_hover={{
+		// 											textDecoration: 'underline'
+		// 										}}
+		// 										onClick={() =>
+		// 											handleSelection(
+		// 												Endpoint,
+		// 												Name
+		// 											)
+		// 										}
+		// 									>
+		// 										<Box>{Name}</Box>
+		// 										<Box>{Years}</Box>
+		// 										{isLoading &&
+		// 											endpoint === Endpoint && (
+		// 												<Spinner />
+		// 											)}
+		// 									</ListItem>
+		// 								)}
+		// 							</div>
+		// 						);
+		// 					}
+		// 				);
+		// 			})
+		// 			.flat()}
+		// 	);
+		// </List>
+		<></>
 	);
 };
 

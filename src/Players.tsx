@@ -1,7 +1,9 @@
+import { AppState, removeSelection } from './store/slice';
 import { Badge, Flex } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState, removeSelection } from './store/slice';
+
 import { MdDelete } from 'react-icons/md';
+
 const Players = (): React.ReactElement => {
 	const dispatch = useDispatch();
 
@@ -12,7 +14,7 @@ const Players = (): React.ReactElement => {
 	};
 
 	return (
-		<Flex w='85vw' mb={3}>
+		<Flex w='85vw' my={3}>
 			{players.map(({ Name }) => (
 				<Badge
 					display='flex'

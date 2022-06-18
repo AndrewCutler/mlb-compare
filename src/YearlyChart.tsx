@@ -88,6 +88,7 @@ const YearlyChart = ({
 								<XAxis dataKey='Age' />
 								<YAxis
 									type='number'
+									// TODO: handle percentage stats like BA
 									domain={[
 										(dataMin: number) =>
 											Math.floor(dataMin * 0.9),

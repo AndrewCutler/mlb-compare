@@ -10,7 +10,7 @@ import {
 	AutoCompleteItem,
 	AutoCompleteList
 } from '@choc-ui/chakra-autocomplete';
-import { Box, Button, Flex, Input, Spinner, Tooltip } from '@chakra-ui/react';
+import { Box, Button, Flex, Tooltip } from '@chakra-ui/react';
 import { IPlayerStats, ISearchResult } from './models/api.models';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -56,7 +56,6 @@ const Search = (): React.ReactElement => {
 		refetch: endpointRefetch,
 		data: endpointData,
 		isFetched: isEndpointFetched,
-		isLoading: isEndpointLoading
 	} = useQuery<IPlayerStats>(
 		['stats', endpoint],
 		() => endpointRequest(endpoint),
@@ -125,9 +124,7 @@ const Search = (): React.ReactElement => {
 		<Flex>
 			<AutoComplete
 				openOnFocus={false}
-				emptyState={
-					isSearchDisabled ? <></> : <Box px={1}>No results</Box>
-				}>
+				emptyState={<Box px={1}>No results</Box>}>
 				<AutoCompleteInput
 					value={inputText}
 					onChange={({ target: { value } }) => setInputText(value)}
@@ -154,11 +151,6 @@ const Search = (): React.ReactElement => {
 													justifyContent='space-between'>
 													<Box>{Name}</Box>
 													<Box>{Years}</Box>
-													{isEndpointLoading &&
-														endpoint ===
-															Endpoint && (
-															<Spinner />
-														)}
 												</Flex>
 											</AutoCompleteItem>
 										);

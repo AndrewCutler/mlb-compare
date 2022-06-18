@@ -25,7 +25,6 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 				.filter(age => includeCareer ? true : age !== 'Career')
 		)
 	);
-	console.log(uniqueAges)
 	const playerToId = playerData.reduce(
 		(dict, player) => ({ ...dict, [player.Name]: uuidv4() }),
 		{} as { [name: string]: string }

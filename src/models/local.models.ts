@@ -6,7 +6,7 @@ export interface IStatOption {
 	DisplayLabel: string;
 	IsDisabled: boolean;
 	IsChecked: boolean;
-	FullMark?: number;
+	IsRadar?: boolean;
 }
 
 export const STATS: IStatSelection = [
@@ -26,10 +26,10 @@ export const STATS: IStatSelection = [
 	{ DisplayLabel: 'SO', Label: 'SO', IsDisabled: false, IsChecked: false },
 	{ DisplayLabel: 'TB', Label: 'TB', IsDisabled: false, IsChecked: false },
 	{ DisplayLabel: 'SF', Label: 'SF', IsDisabled: false, IsChecked: false },
-	{ Label: 'batting_avg', DisplayLabel: 'BA', IsDisabled: false, IsChecked: false},
-	{ Label: 'onbase_perc', DisplayLabel: 'OBP', IsDisabled: false, IsChecked: false },
-	{ Label: 'slugging_perc', DisplayLabel: 'SLG', IsDisabled: false, IsChecked: false },
-	{ Label: 'onbase_plus_slugging', DisplayLabel: 'OPS', IsDisabled: false, IsChecked: false },
+	{ Label: 'batting_avg', DisplayLabel: 'BA', IsDisabled: false, IsChecked: false, IsRadar: true },
+	{ Label: 'onbase_perc', DisplayLabel: 'OBP', IsDisabled: false, IsChecked: false, IsRadar: true },
+	{ Label: 'slugging_perc', DisplayLabel: 'SLG', IsDisabled: false, IsChecked: false, IsRadar: true },
+	{ Label: 'onbase_plus_slugging', DisplayLabel: 'OPS', IsDisabled: false, IsChecked: false, IsRadar: true },
 ];
 
 export const TABS = ['YEARLY', 'RADAR'];

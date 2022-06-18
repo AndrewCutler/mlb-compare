@@ -1,4 +1,4 @@
-import '@fontsource/chathura/700.css';
+import '@fontsource/inconsolata/700.css';
 
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -10,16 +10,16 @@ import store from './store/store';
 
 export const App = () => {
 	const theme = extendTheme({
-		// fonts: {
-		// 	body: 'Chathura'
-		// },
-		// styles: {
-		// 	global: {
-		// 		body: {
-		// 			fontSize: '32px'
-		// 		}
-		// 	}
-		// }
+		fonts: {
+			body: 'Inconsolata',
+		},
+		styles: {
+			global: {
+				body: {
+					fontSize: '20px'
+				},
+			}
+		},
 	});
 
 	return (

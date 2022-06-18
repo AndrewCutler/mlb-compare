@@ -26,8 +26,10 @@ export const STATS: IStatSelection = [
 	{ DisplayLabel: 'SO', Label: 'SO', IsDisabled: false, IsChecked: false },
 	{ DisplayLabel: 'TB', Label: 'TB', IsDisabled: false, IsChecked: false },
 	{ DisplayLabel: 'SF', Label: 'SF', IsDisabled: false, IsChecked: false },
-	{ Label: 'batting_avg', DisplayLabel: 'BA', IsDisabled: false, IsChecked: false, FullMark: 450 },
-	{ Label: 'onbase_perc', DisplayLabel: 'OBP', IsDisabled: false, IsChecked: false, FullMark: 625 },
-	{ Label: 'slugging_perc', DisplayLabel: 'SLG', IsDisabled: false, IsChecked: false, FullMark: 850 },
-	{ Label: 'onbase_plus_slugging', DisplayLabel: 'OPS', IsDisabled: false, IsChecked: false , FullMark: 1450},
+	{ Label: 'batting_avg', DisplayLabel: 'BA', IsDisabled: false, IsChecked: false},
+	{ Label: 'onbase_perc', DisplayLabel: 'OBP', IsDisabled: false, IsChecked: false },
+	{ Label: 'slugging_perc', DisplayLabel: 'SLG', IsDisabled: false, IsChecked: false },
+	{ Label: 'onbase_plus_slugging', DisplayLabel: 'OPS', IsDisabled: false, IsChecked: false },
 ];
+
+export const TABS = ['YEARLY', 'RADAR'];

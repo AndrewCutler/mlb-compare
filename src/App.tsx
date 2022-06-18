@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Home from './Home';
 import { Provider } from 'react-redux';
+import Spinner from './Spinner';
 import store from './store/store';
 
 export const App = () => {
@@ -25,6 +26,7 @@ export const App = () => {
 		<ChakraProvider theme={theme}>
 			<Provider store={store}>
 				<QueryClientProvider client={new QueryClient()}>
+					<Spinner />
 					<Home />
 				</QueryClientProvider>
 			</Provider>

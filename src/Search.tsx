@@ -2,7 +2,8 @@ import {
 	AppState,
 	addSelection,
 	setResetSearch,
-	setSearchResults
+	setSearchResults,
+	toggleLoading
 } from './store/slice';
 import {
 	AutoComplete,
@@ -10,7 +11,7 @@ import {
 	AutoCompleteItem,
 	AutoCompleteList
 } from '@choc-ui/chakra-autocomplete';
-import { Box, Button, Flex, Tooltip } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { IPlayerStats, ISearchResult } from './models/api.models';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -36,13 +37,10 @@ const Search = (): React.ReactElement => {
 	const [endpoint, setEndpoint] = useState('');
 	const [name, setName] = useState('');
 
-	const isSearchDisabled = search?.length < 3;
-
 	const {
 		refetch: searchRefetch,
 		data: searchData,
-		isFetching: isSearchFetching,
-		isError: isSearchError
+		isFetching: isSearchFetching
 	} = useQuery<ISearchResult>(
 		['search', search],
 		() => searchRequest(search),
@@ -56,6 +54,7 @@ const Search = (): React.ReactElement => {
 		refetch: endpointRefetch,
 		data: endpointData,
 		isFetched: isEndpointFetched,
+		isFetching: isEndpointFetching
 	} = useQuery<IPlayerStats>(
 		['stats', endpoint],
 		() => endpointRequest(endpoint),
@@ -63,6 +62,10 @@ const Search = (): React.ReactElement => {
 			enabled: false
 		}
 	);
+
+	useEffect(() => {
+		dispatch(toggleLoading(isSearchFetching || isEndpointFetching));
+	}, [isSearchFetching, isEndpointFetching, dispatch]);
 
 	useEffect(() => {
 		const timeout = window.setTimeout(() => {
@@ -107,12 +110,6 @@ const Search = (): React.ReactElement => {
 			dispatch(setSearchResults(undefined));
 		}
 	}, [endpointData, name, dispatch]);
-
-	const handleSearch = (): void => {
-		if (!isSearchFetching && !isSearchDisabled) {
-			searchRefetch();
-		}
-	};
 
 	const handleSelection = (endpoint: string, name: string): void => {
 		setEndpoint(endpoint);
@@ -160,19 +157,6 @@ const Search = (): React.ReactElement => {
 							.flat()}
 				</AutoCompleteList>
 			</AutoComplete>
-			<Tooltip
-				label='At least three characters are required'
-				isDisabled={!isSearchDisabled}
-				shouldWrapChildren>
-				<Button
-					ml={2}
-					isLoading={isSearchFetching && !isSearchError}
-					variant='solid'
-					disabled={isSearchDisabled}
-					onClick={handleSearch}>
-					Search
-				</Button>
-			</Tooltip>
 		</Flex>
 	);
 };

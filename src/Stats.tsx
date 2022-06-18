@@ -1,5 +1,5 @@
 import { AppState, toggleStat } from './store/slice';
-import { Box, Checkbox, Stack, Text } from '@chakra-ui/react';
+import { Box, Checkbox, Text } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Stats = (): React.ReactElement => {
@@ -7,7 +7,8 @@ const Stats = (): React.ReactElement => {
 
 	const {
 		stats,
-		selections
+		selections,
+		tabIndex
 	} = useSelector(AppState);
 
 	const handleChange = (label: string): void => {

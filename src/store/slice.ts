@@ -7,6 +7,8 @@ export interface IAppState {
 	selections: ISelectionPlayer[];
 	stats: IStatSelection;
 	resetSearch: boolean;
+	tabIndex: number;
+	isLoading: boolean;
 }
 
 export interface IStore {
@@ -16,8 +18,11 @@ export interface IStore {
 const initialState: IAppState = {
 	searchResults: undefined,
 	selections: [],
+	// TODO: build yearly and radar stats
 	stats: STATS,
 	resetSearch: false,
+	tabIndex: 0,
+	isLoading: false,
 }
 
 export const appSlice = createSlice({
@@ -32,6 +37,9 @@ export const appSlice = createSlice({
 
 			return state;
 		},
+		setTabIndex: (state, { payload }: PayloadAction<number>) => {
+			state.tabIndex = payload;
+		},
 		addSelection: (state, { payload }: PayloadAction<ISelectionPlayer>) => {
 			const old = state.selections;
 
@@ -42,6 +50,9 @@ export const appSlice = createSlice({
 		},
 		removeSelection: (state, { payload }: PayloadAction<string>) => {
 			state.selections = state.selections.filter(({ Name }) => Name !== payload);
+		},
+		toggleLoading: (state, { payload }: PayloadAction<boolean>) => {
+			state.isLoading = payload;
 		},
 		toggleStat: (state, { payload }: PayloadAction<string>) => {
 			state.stats = state.stats?.map((stat) => {
@@ -58,7 +69,7 @@ export const appSlice = createSlice({
 	},
 });
 
-export const { setResetSearch, setSearchResults, addSelection, removeSelection, toggleStat } = appSlice.actions;
+export const { setResetSearch, setSearchResults, addSelection, toggleLoading, removeSelection, toggleStat, setTabIndex } = appSlice.actions;
 
 export const AppState = (state: IStore) => state.app;
 

@@ -15,17 +15,14 @@ import { Box, Flex } from '@chakra-ui/react';
 import { IPlayerStats, ISearchResult } from './models/api.models';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import apiUrl from './utils/api';
 
 import { useQuery } from 'react-query';
 
 const searchRequest = async (name: string) =>
-	fetch(`${process.env.REACT_APP_API ?? ''}/search/${name}`).then((res) =>
-		res.json()
-	);
+	fetch(`${apiUrl}/search/${name}`).then((res) => res.json());
 const endpointRequest = async (endpoint: string) =>
-	fetch(`${process.env.REACT_APP_API ?? ''}/stats/${endpoint}`).then((res) =>
-		res.json()
-	);
+	fetch(`${apiUrl}/stats/${endpoint}`).then((res) => res.json());
 
 // TODO: refactor; probably has unnecessary stuff. Could be componentized? Create hooks for queries?
 const Search = (): React.ReactElement => {
@@ -121,7 +118,8 @@ const Search = (): React.ReactElement => {
 		<Flex>
 			<AutoComplete
 				openOnFocus={false}
-				emptyState={<Box px={1}>No results</Box>}>
+				emptyState={<Box px={1}>No results</Box>}
+			>
 				<AutoCompleteInput
 					value={inputText}
 					onChange={({ target: { value } }) => setInputText(value)}
@@ -142,10 +140,12 @@ const Search = (): React.ReactElement => {
 														Name
 													)
 												}
-												value={Name}>
+												value={Name}
+											>
 												<Flex
 													w='100%'
-													justifyContent='space-between'>
+													justifyContent='space-between'
+												>
 													<Box>{Name}</Box>
 													<Box>{Years}</Box>
 												</Flex>

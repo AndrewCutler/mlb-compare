@@ -4,6 +4,7 @@ import Players from './Players';
 import Search from './Search';
 import Stats from './Stats';
 import Title from './Title';
+import Ages from './Ages';
 
 const Home = (): React.ReactElement => {
 	return (
@@ -12,6 +13,7 @@ const Home = (): React.ReactElement => {
 			<Search />
 			<Players />
 			<Stats />
+			<Ages />
 			<ChartTabset />
 		</Flex>
 	);

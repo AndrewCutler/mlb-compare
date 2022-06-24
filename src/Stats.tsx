@@ -17,7 +17,7 @@ const Stats = (): React.ReactElement => {
 
 	return (
 		<Box mb={3}>
-			<Text>Choose stats to compare</Text>
+			<Text>Compare only these stats</Text>
 			<Box>
 				{stats
 					.filter((stat) =>

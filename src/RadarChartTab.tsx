@@ -43,13 +43,15 @@ const RadarChartTab = (): React.ReactElement => {
 					width={730}
 					height={500}
 					// TODO: allow selection of seasons/ages to build stats for
-					data={chartData}>
+					data={chartData}
+				>
 					<PolarGrid />
 					<PolarAngleAxis dataKey='stat' />
 					<PolarRadiusAxis angle={30} domain={domain} />
 					{selections.map(({ Name }, index) => {
 						return (
 							<Radar
+								key={Name}
 								name={Name}
 								dataKey={Name}
 								stroke={strokeColor}

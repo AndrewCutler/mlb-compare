@@ -6,6 +6,7 @@ export interface IAppState {
 	searchResults: ISearchResult | undefined;
 	selections: ISelectionPlayer[];
 	stats: IStatSelection;
+	ages: string[];
 	resetSearch: boolean;
 	tabIndex: number;
 	isLoading: boolean;
@@ -22,6 +23,7 @@ const initialState: IAppState = {
 	stats: STATS,
 	resetSearch: false,
 	tabIndex: 0,
+	ages: [],
 	isLoading: false,
 }
 
@@ -65,11 +67,21 @@ export const appSlice = createSlice({
 
 				return stat;
 			});
-		}
+		},
+		toggleAge: (state, { payload }: PayloadAction<string>) => {
+			if (state.ages.includes(payload)) {
+				state.ages = state.ages.filter(age => age !== payload);
+			} else {
+				state.ages = [
+					...state.ages,
+					payload,
+				];
+			}
+		},
 	},
 });
 
-export const { setResetSearch, setSearchResults, addSelection, toggleLoading, removeSelection, toggleStat, setTabIndex } = appSlice.actions;
+export const { setResetSearch, setSearchResults, addSelection, toggleLoading, toggleAge, removeSelection, toggleStat, setTabIndex } = appSlice.actions;
 
 export const AppState = (state: IStore) => state.app;
 

@@ -1,14 +1,14 @@
 import { Box, Checkbox, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { AppState } from './store/slice';
-
-// const getAllUniqueAges = ()
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState, toggleAge } from './store/slice';
 
 const Ages = (): React.ReactElement => {
-	const { selections } = useSelector(AppState);
+	const dispatch = useDispatch();
 
-	const [ages, setAges] = useState<string[]>([]);
+	const { selections, ages } = useSelector(AppState);
+
+	const [uniqueAges, setUniqueAges] = useState<string[]>([]);
 
 	useEffect(() => {
 		if (selections && selections.length > 0) {
@@ -21,24 +21,21 @@ const Ages = (): React.ReactElement => {
 						.sort()
 				)
 			);
-			setAges(uniqueAges);
+			setUniqueAges(uniqueAges);
 		}
 	}, [selections]);
-
-	const toggleAge = (age: string): void => {
-		throw new Error('Not implement');
-	};
 
 	return (
 		<Box mb={3}>
 			<Text>Compare only these ages</Text>
 			<Box>
-				{ages.map((age) => (
+				{uniqueAges.map((age) => (
 					<Checkbox
 						mr={5}
 						key={age}
 						size='lg'
-						onClick={() => toggleAge(age)}
+						checked={ages.includes(age)}
+						onChange={() => dispatch(toggleAge(age))}
 					>
 						{age}
 					</Checkbox>

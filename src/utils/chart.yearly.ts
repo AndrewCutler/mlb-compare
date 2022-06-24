@@ -15,13 +15,23 @@ const getValueForStatByAge = (
 	stat: string
 ): number | undefined => player.StatsByAge[age]?.Stats[stat];
 
-export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[], includeCareer: boolean) => {
+export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[], includeCareer: boolean, ages: string[]) => {
 	const uniqueAges = Array.from(
 		new Set(
 			playerData
 				.map(({ StatsByAge }) => Object.keys(StatsByAge))
 				.flat()
-				.filter(age => includeCareer ? true : age !== 'Career')
+				.filter(age => {
+					let include = true;
+					if (ages && ages.length > 0 && !ages.includes(age)) {
+						include = false;
+					}
+					if (age === 'Career' && includeCareer) {
+						include = true;
+					}
+
+					return include;
+				})
 		)
 	);
 	const playerToId = playerData.reduce(

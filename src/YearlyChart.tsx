@@ -15,6 +15,8 @@ import { useEffect, useState } from 'react';
 
 import { COLORS } from './utils/colors';
 import { ISelectionPlayer } from './models/api.models';
+import { useSelector } from 'react-redux';
+import { AppState } from './store/slice';
 
 const CustomTooltip = ({
 	payload: tooltipPayload
@@ -24,7 +26,8 @@ const CustomTooltip = ({
 			<Flex
 				flexDirection='column'
 				color='white'
-				textShadow='1px 1px black'>
+				textShadow='1px 1px black'
+			>
 				{tooltipPayload.map(
 					({ payload, name, value, dataKey }: any) => (
 						<div key={name}>
@@ -47,6 +50,8 @@ const YearlyChart = ({
 	stat: string;
 	playerData: ISelectionPlayer[];
 }): React.ReactElement => {
+	const { ages } = useSelector(AppState);
+
 	const [chartData, setChartData] = useState<any[]>([]);
 	const [chartKeys, setChartKeys] = useState<any[]>([]);
 	const [isZoomed, setIsZoomed] = useState<boolean>(false);
@@ -57,13 +62,14 @@ const YearlyChart = ({
 			const { chartData: _chartData, uniqueKeys } = buildYearlyChartData(
 				stat,
 				playerData,
-				includeCareer
+				includeCareer,
+				ages
 			);
 
 			setChartData(_chartData);
 			setChartKeys(uniqueKeys);
 		}
-	}, [playerData, stat, includeCareer]);
+	}, [playerData, stat, includeCareer, ages]);
 
 	return (
 		<Box>
@@ -75,7 +81,8 @@ const YearlyChart = ({
 								checked={includeCareer}
 								onChange={() =>
 									setIncludeCareer(!includeCareer)
-								}>
+								}
+							>
 								Career
 							</Checkbox>
 						</Box>
@@ -83,7 +90,8 @@ const YearlyChart = ({
 							<BarChart
 								width={isZoomed ? 720 : 450}
 								height={isZoomed ? 500 : 300}
-								data={chartData}>
+								data={chartData}
+							>
 								<CartesianGrid strokeDasharray='5 5' />
 								<XAxis dataKey='Age' />
 								<YAxis

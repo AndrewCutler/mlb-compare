@@ -2,9 +2,8 @@ import ChartTabset from './ChartTabset';
 import { Flex } from '@chakra-ui/react';
 import Players from './Players';
 import Search from './Search';
-import Stats from './Stats';
 import Title from './Title';
-import Ages from './Ages';
+import Toggles from './Toggles';
 
 const Home = (): React.ReactElement => {
 	return (
@@ -12,8 +11,7 @@ const Home = (): React.ReactElement => {
 			<Title />
 			<Search />
 			<Players />
-			<Stats />
-			<Ages />
+			<Toggles />
 			<ChartTabset />
 		</Flex>
 	);

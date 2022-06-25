@@ -1,10 +1,10 @@
 import { AppState, toggleStat } from './store/slice';
-import { Box, Checkbox, Text } from '@chakra-ui/react';
+import { Box, Checkbox, Flex, Text } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { TABS } from './models/local.models';
 
-const Stats = (): React.ReactElement => {
+const Stats = ({ fixed }: { fixed?: boolean }): React.ReactElement => {
 	const dispatch = useDispatch();
 
 	const { stats, selections, tabIndex } = useSelector(AppState);
@@ -18,26 +18,28 @@ const Stats = (): React.ReactElement => {
 	return (
 		<Box mb={3}>
 			<Text>Compare only these stats</Text>
-			<Box>
+			<Flex flexDirection={fixed ? 'column' : 'row'}>
 				{stats
 					.filter((stat) =>
 						TABS[tabIndex] === 'RADAR' ? stat.IsRadar : true
 					)
 					.map(({ IsChecked, Label, DisplayLabel }) => {
 						return (
-							<Checkbox
-								isDisabled={isDisabled}
-								isChecked={IsChecked}
-								mr={5}
-								size='lg'
-								key={DisplayLabel}
-								onChange={() => handleChange(Label)}
-							>
-								{DisplayLabel ?? Label}
-							</Checkbox>
+							<div>
+								<Checkbox
+									isDisabled={isDisabled}
+									isChecked={IsChecked}
+									mr={5}
+									size='lg'
+									key={DisplayLabel}
+									onChange={() => handleChange(Label)}
+								>
+									{DisplayLabel ?? Label}
+								</Checkbox>
+							</div>
 						);
 					})}
-			</Box>
+			</Flex>
 		</Box>
 	);
 };

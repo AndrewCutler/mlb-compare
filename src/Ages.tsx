@@ -1,9 +1,9 @@
-import { Box, Checkbox, Text } from '@chakra-ui/react';
+import { Box, Checkbox, Flex, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState, toggleAge } from './store/slice';
 
-const Ages = (): React.ReactElement => {
+const Ages = ({ fixed }: { fixed?: boolean }): React.ReactElement => {
 	const dispatch = useDispatch();
 
 	const { selections, ages } = useSelector(AppState);
@@ -27,20 +27,26 @@ const Ages = (): React.ReactElement => {
 
 	return (
 		<Box mb={3}>
-			<Text>Compare only these ages</Text>
-			<Box>
-				{uniqueAges.map((age) => (
-					<Checkbox
-						mr={5}
-						key={age}
-						size='lg'
-						checked={ages.includes(age)}
-						onChange={() => dispatch(toggleAge(age))}
-					>
-						{age}
-					</Checkbox>
-				))}
-			</Box>
+			{selections && selections.length > 0 && (
+				<>
+					<Text>Compare only these ages</Text>
+					<Flex flexDirection={fixed ? 'column' : 'row'}>
+						{uniqueAges.map((age) => (
+							<div>
+								<Checkbox
+									mr={5}
+									key={age}
+									size='lg'
+									checked={ages.includes(age)}
+									onChange={() => dispatch(toggleAge(age))}
+								>
+									{age}
+								</Checkbox>
+							</div>
+						))}
+					</Flex>
+				</>
+			)}
 		</Box>
 	);
 };

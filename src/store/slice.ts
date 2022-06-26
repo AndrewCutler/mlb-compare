@@ -7,6 +7,7 @@ export interface IAppState {
 	selections: ISelectionPlayer[];
 	stats: IStatSelection;
 	ages: string[];
+	seasons: string[];
 	resetSearch: boolean;
 	tabIndex: number;
 	isLoading: boolean;
@@ -24,6 +25,7 @@ const initialState: IAppState = {
 	resetSearch: false,
 	tabIndex: 0,
 	ages: [],
+	seasons: [],
 	isLoading: false,
 }
 
@@ -82,11 +84,26 @@ export const appSlice = createSlice({
 		},
 		resetAges: (state, { payload }: PayloadAction<string[]>) => {
 			state.ages = payload;
+		},
+		// Map/Set would be a superior data structure, however they are not serializable
+		// https://redux.js.org/style-guide/#do-not-put-non-serializable-values-in-state-or-actions
+		toggleSeason: (state, { payload }: PayloadAction<string>) => {
+			if (state.seasons.includes(payload)) {
+				state.seasons = state.seasons.filter(season => season !== payload);
+			} else {
+				state.seasons = [
+					...state.seasons,
+					payload,
+				];
+			}
+		},
+		resetSeasons: (state, { payload }: PayloadAction<string[]>) => {
+			state.seasons = payload;
 		}
 	},
 });
 
-export const { setResetSearch, setSearchResults, addSelection, toggleLoading, toggleAge, removeSelection, toggleStat, setTabIndex, resetAges } = appSlice.actions;
+export const { setResetSearch, setSearchResults, addSelection, toggleLoading, toggleAge, toggleSeason, resetSeasons, removeSelection, toggleStat, setTabIndex, resetAges } = appSlice.actions;
 
 export const AppState = (state: IStore) => state.app;
 

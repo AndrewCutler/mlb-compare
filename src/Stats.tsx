@@ -1,5 +1,5 @@
 import { AppState, toggleStat } from './store/slice';
-import { Box, Checkbox, Flex, Text } from '@chakra-ui/react';
+import { Box, Checkbox, Flex, Grid, Text } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { TABS } from './models/local.models';
@@ -18,7 +18,7 @@ const Stats = ({ fixed }: { fixed?: boolean }): React.ReactElement => {
 	return (
 		<Box mb={3}>
 			<Text>Compare only these stats</Text>
-			<Flex flexDirection={fixed ? 'column' : 'row'}>
+			<Grid templateColumns={fixed ? '1fr' : 'repeat(6, 1fr)'}>
 				{stats
 					.filter((stat) =>
 						TABS[tabIndex] === 'RADAR' ? stat.IsRadar : true
@@ -38,7 +38,7 @@ const Stats = ({ fixed }: { fixed?: boolean }): React.ReactElement => {
 							</div>
 						);
 					})}
-			</Flex>
+			</Grid>
 		</Box>
 	);
 };

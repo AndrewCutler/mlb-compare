@@ -1,34 +1,49 @@
 import { useEffect, useState } from 'react';
 
-import { AppState } from './store/slice';
-import { Box } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
+import { AppState, resetSeasons, toggleSeason } from './store/slice';
+import { Box, Checkbox, Flex, Text } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
 
-const Seasons = (): React.ReactElement => {
-	const { selections } = useSelector(AppState);
+const Seasons = ({ fixed }: { fixed?: boolean }): React.ReactElement => {
+	const dispatch = useDispatch();
+	const { selections, seasons } = useSelector(AppState);
 
-	const [overlaps, setOverlaps] = useState<string[]>([]);
+	const [uniqueSeasons, setUniqueSeasons] = useState<string[]>([]);
 
-	// useEffect(() => {
-	// 	const years = selections
-	// 		.map(({ StatsByAge: Data }) => Data.map(({ Year }) => Year))
-	// 		.flat();
-	// 	const uniques = new Set<string>();
-	// 	const duplicates: string[] = [];
-		
-	// 	for (const year of years) {
-	// 		if (!uniques.has(year)) {
-	// 			uniques.add(year);
-	// 		} else {
-	// 			duplicates.push(year);
-	// 		}
-	// 	}
+	useEffect(() => {
+		const uniques = Array.from(
+			new Set(
+				selections
+					.map(({ StatsByAge }) => Object.keys(StatsByAge))
+					.flat()
+					.sort()
+			)
+		);
+		setUniqueSeasons(uniques);
+	}, [dispatch, selections]);
 
-	// 	setOverlaps(duplicates);
-	// }, [selections]);
+	useEffect(() => {
+		dispatch(resetSeasons(uniqueSeasons));
+	}, [dispatch, uniqueSeasons]);
 
 	return (
-		<Box>{overlaps.length > 0 && overlaps.map((year) => <span key={year}>{year}</span>)}</Box>
+		<Box mb={3}>
+			<Text>Compare only these ages</Text>
+			<Flex flexDirection={fixed ? 'column' : 'row'}>
+				{uniqueSeasons.map((season) => (
+					<div key={season}>
+						<Checkbox
+							mr={5}
+							size='lg'
+							isChecked={seasons.includes(season)}
+							onChange={() => dispatch(toggleSeason(season))}
+						>
+							{season}
+						</Checkbox>
+					</div>
+				))}
+			</Flex>
+		</Box>
 	);
 };
 

@@ -7,11 +7,18 @@ import {
 	MenuList,
 	useColorModeValue
 } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 import Ages from './Ages';
 import Stats from './Stats';
+import { AppState } from './store/slice';
 
 const TogglesFooter = (): React.ReactElement => {
+	const { selections } = useSelector(AppState);
 	const bg = useColorModeValue('gray.300', 'gray.700');
+
+	if (!selections || selections.length <= 0) {
+		return <></>;
+	}
 
 	// TODO: do not close menu on selection
 	return (

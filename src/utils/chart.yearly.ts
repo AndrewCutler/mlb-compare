@@ -15,7 +15,7 @@ const getValueForStatByAge = (
 	stat: string
 ): number | undefined => player.StatsByAge[age]?.Stats[stat];
 
-export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[], ages: string[]) => {
+export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[], ages: string[], seasons: string[]) => {
 	const uniqueAges = Array.from(
 		new Set(
 			playerData

@@ -13,6 +13,7 @@ import Stats from './Stats';
 const TogglesFooter = (): React.ReactElement => {
 	const bg = useColorModeValue('gray.300', 'gray.700');
 
+	// TODO: do not close menu on selection
 	return (
 		<Flex
 			justifyContent='space-between'

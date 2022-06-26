@@ -26,14 +26,15 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 					if (ages && ages.length > 0 && !ages.includes(age)) {
 						include = false;
 					}
-					if (age === 'Career' && includeCareer) {
-						include = true;
+					if (age === 'Career' && !includeCareer) {
+						include = false;
 					}
 
 					return include;
 				})
 		)
 	);
+	console.log(uniqueAges, playerData.map(({ StatsByAge }) => Object.keys(StatsByAge)))
 	const playerToId = playerData.reduce(
 		(dict, player) => ({ ...dict, [player.Name]: uuidv4() }),
 		{} as { [name: string]: string }

@@ -17,7 +17,6 @@ const Ages = ({ fixed }: { fixed?: boolean }): React.ReactElement => {
 					selections
 						.map(({ StatsByAge }) => Object.keys(StatsByAge))
 						.flat()
-						.filter((age) => age !== 'Career')
 						.sort()
 				)
 			);

@@ -68,6 +68,7 @@ export const appSlice = createSlice({
 				return stat;
 			});
 		},
+		// TODO: array is not the ideal data type here
 		toggleAge: (state, { payload }: PayloadAction<string>) => {
 			if (state.ages.includes(payload)) {
 				state.ages = state.ages.filter(age => age !== payload);

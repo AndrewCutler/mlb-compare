@@ -76,11 +76,8 @@ const YearlyChart = ({
 	const [chartData, setChartData] = useState<any[]>([]);
 	const [chartKeys, setChartKeys] = useState<any[]>([]);
 	const [isZoomed, setIsZoomed] = useState<boolean>(false);
+	// TODO: move out of local state; can add/remove "Career" from ages
 	const [includeCareer, setIncludeCareer] = useState<boolean>(false);
-
-	useEffect(() => {
-		console.log(breakpoint);
-	}, [breakpoint]);
 
 	useEffect(() => {
 		if (playerData && playerData.length > 0) {

@@ -8,7 +8,7 @@ import {
 	XAxis,
 	YAxis
 } from 'recharts';
-import { Box, Checkbox, Flex } from '@chakra-ui/react';
+import { Box, Checkbox, Flex, useBreakpointValue } from '@chakra-ui/react';
 import { RiZoomInLine, RiZoomOutLine } from 'react-icons/ri';
 import { buildYearlyChartData, getTooltipYear } from './utils/chart.yearly';
 import { useEffect, useState } from 'react';
@@ -43,6 +43,16 @@ const CustomTooltip = ({
 	return <></>;
 };
 
+const getChartWidth = (isZoomed: boolean, isSmall: boolean): number => {
+	if (isSmall) {
+		return 250;
+	} else if (isZoomed) {
+		return 720;
+	}
+
+	return 450;
+};
+
 const YearlyChart = ({
 	stat,
 	playerData
@@ -50,6 +60,7 @@ const YearlyChart = ({
 	stat: string;
 	playerData: ISelectionPlayer[];
 }): React.ReactElement => {
+	const breakpoint = useBreakpointValue({ sm: 'small' });
 	const { ages } = useSelector(AppState);
 
 	const [chartData, setChartData] = useState<any[]>([]);
@@ -88,7 +99,10 @@ const YearlyChart = ({
 						</Box>
 						<Flex>
 							<BarChart
-								width={isZoomed ? 720 : 450}
+								width={getChartWidth(
+									isZoomed,
+									breakpoint === 'small'
+								)}
 								height={isZoomed ? 500 : 300}
 								data={chartData}
 							>

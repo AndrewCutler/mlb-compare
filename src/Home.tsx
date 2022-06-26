@@ -4,14 +4,18 @@ import Players from './Players';
 import Search from './Search';
 import Title from './Title';
 import Toggles from './Toggles';
+import { useSelector } from 'react-redux';
+import { AppState } from './store/slice';
 
 const Home = (): React.ReactElement => {
+	const { selections } = useSelector(AppState);
+
 	return (
-		<Flex justifyContent='center' flexDirection='column' p={5} maxW='85vw'>
+		<Flex justifyContent='center' flexDirection='column' p={5}>
 			<Title />
 			<Search />
 			<Players />
-			<Toggles />
+			{selections && selections.length > 0 && <Toggles />}
 			<ChartTabset />
 		</Flex>
 	);

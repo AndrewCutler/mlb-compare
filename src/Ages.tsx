@@ -27,26 +27,21 @@ const Ages = ({ fixed }: { fixed?: boolean }): React.ReactElement => {
 
 	return (
 		<Box mb={3}>
-			{selections && selections.length > 0 && (
-				<>
-					<Text>Compare only these ages</Text>
-					<Flex flexDirection={fixed ? 'column' : 'row'}>
-						{uniqueAges.map((age) => (
-							<div>
-								<Checkbox
-									mr={5}
-									key={age}
-									size='lg'
-									checked={ages.includes(age)}
-									onChange={() => dispatch(toggleAge(age))}
-								>
-									{age}
-								</Checkbox>
-							</div>
-						))}
-					</Flex>
-				</>
-			)}
+			<Text>Compare only these ages</Text>
+			<Flex flexDirection={fixed ? 'column' : 'row'}>
+				{uniqueAges.map((age) => (
+					<div key={age}>
+						<Checkbox
+							mr={5}
+							size='lg'
+							checked={ages.includes(age)}
+							onChange={() => dispatch(toggleAge(age))}
+						>
+							{age}
+						</Checkbox>
+					</div>
+				))}
+			</Flex>
 		</Box>
 	);
 };

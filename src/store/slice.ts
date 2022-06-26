@@ -68,7 +68,8 @@ export const appSlice = createSlice({
 				return stat;
 			});
 		},
-		// TODO: array is not the ideal data type here
+		// Map/Set would be a superior data structure, however they are not serializable
+		// https://redux.js.org/style-guide/#do-not-put-non-serializable-values-in-state-or-actions
 		toggleAge: (state, { payload }: PayloadAction<string>) => {
 			if (state.ages.includes(payload)) {
 				state.ages = state.ages.filter(age => age !== payload);
@@ -79,10 +80,13 @@ export const appSlice = createSlice({
 				];
 			}
 		},
+		resetAges: (state, { payload }: PayloadAction<string[]>) => {
+			state.ages = payload;
+		}
 	},
 });
 
-export const { setResetSearch, setSearchResults, addSelection, toggleLoading, toggleAge, removeSelection, toggleStat, setTabIndex } = appSlice.actions;
+export const { setResetSearch, setSearchResults, addSelection, toggleLoading, toggleAge, removeSelection, toggleStat, setTabIndex, resetAges } = appSlice.actions;
 
 export const AppState = (state: IStore) => state.app;
 

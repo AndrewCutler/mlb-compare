@@ -43,6 +43,36 @@ const CustomTooltip = ({
 	return <></>;
 };
 
+const ZoomButton = ({
+	isSmallViewport,
+	isZoomed,
+	onChange
+}: {
+	isSmallViewport: boolean;
+	isZoomed: boolean;
+	onChange: (zoomed: boolean) => void;
+}): React.ReactElement => {
+	if (isSmallViewport) {
+		return <></>;
+	}
+
+	if (isZoomed) {
+		return (
+			<RiZoomOutLine
+				onClick={() => onChange(false)}
+				style={{ cursor: 'pointer' }}
+			/>
+		);
+	}
+
+	return (
+		<RiZoomInLine
+			onClick={() => onChange(true)}
+			style={{ cursor: 'pointer' }}
+		/>
+	);
+};
+
 const getChartWidth = (isZoomed: boolean, isSmall: boolean): number => {
 	if (isSmall) {
 		return 300;
@@ -76,88 +106,63 @@ const YearlyChart = ({
 	const [chartData, setChartData] = useState<any[]>([]);
 	const [chartKeys, setChartKeys] = useState<any[]>([]);
 	const [isZoomed, setIsZoomed] = useState<boolean>(false);
-	// TODO: move out of local state; can add/remove "Career" from ages
-	const [includeCareer, setIncludeCareer] = useState<boolean>(false);
+
+	const isSmallViewport = breakpoint === 'small';
 
 	useEffect(() => {
 		if (playerData && playerData.length > 0) {
 			const { chartData: _chartData, uniqueKeys } = buildYearlyChartData(
 				stat,
 				playerData,
-				includeCareer,
 				ages
 			);
 
 			setChartData(_chartData);
 			setChartKeys(uniqueKeys);
 		}
-	}, [playerData, stat, includeCareer, ages]);
+	}, [playerData, stat, ages]);
 
 	return (
 		<Box>
 			<>
 				{chartData?.length > 0 && (
-					<>
-						<Box mb={1}>
-							<Checkbox
-								checked={includeCareer}
-								onChange={() =>
-									setIncludeCareer(!includeCareer)
-								}
-							>
-								Career
-							</Checkbox>
-						</Box>
-						<Flex>
-							<BarChart
-								width={getChartWidth(
-									isZoomed,
-									breakpoint === 'small'
-								)}
-								height={getChartHeight(
-									isZoomed,
-									breakpoint === 'small'
-								)}
-								data={chartData}
-							>
-								<CartesianGrid strokeDasharray='5 5' />
-								<XAxis dataKey='Age' />
-								<YAxis
-									type='number'
-									// TODO: handle percentage stats like BA
-									domain={[
-										(dataMin: number) =>
-											Math.floor(dataMin * 0.9),
-										(dataMax: number) =>
-											Math.ceil(dataMax * 1.1)
-									]}
+					<Flex>
+						<BarChart
+							width={getChartWidth(isZoomed, isSmallViewport)}
+							height={getChartHeight(isZoomed, isSmallViewport)}
+							data={chartData}
+						>
+							<CartesianGrid strokeDasharray='5 5' />
+							<XAxis dataKey='Age' />
+							<YAxis
+								type='number'
+								// TODO: handle percentage stats like BA
+								domain={[
+									(dataMin: number) =>
+										Math.floor(dataMin * 0.9),
+									(dataMax: number) =>
+										Math.ceil(dataMax * 1.1)
+								]}
+							/>
+							<Tooltip content={<CustomTooltip />} />
+							<Legend />
+							<ReferenceLine y={0} stroke='#eee' />
+							{chartKeys.map(({ Key, Name }, index) => (
+								<Bar
+									dataKey={Key}
+									barSize={30}
+									key={Key}
+									name={Name}
+									fill={COLORS[index]}
 								/>
-								<Tooltip content={<CustomTooltip />} />
-								<Legend />
-								<ReferenceLine y={0} stroke='#eee' />
-								{chartKeys.map(({ Key, Name }, index) => (
-									<Bar
-										dataKey={Key}
-										barSize={30}
-										key={Key}
-										name={Name}
-										fill={COLORS[index]}
-									/>
-								))}
-							</BarChart>
-							{isZoomed ? (
-								<RiZoomOutLine
-									onClick={() => setIsZoomed(false)}
-									style={{ cursor: 'pointer' }}
-								/>
-							) : (
-								<RiZoomInLine
-									onClick={() => setIsZoomed(true)}
-									style={{ cursor: 'pointer' }}
-								/>
-							)}
-						</Flex>
-					</>
+							))}
+						</BarChart>
+						<ZoomButton
+							isSmallViewport={isSmallViewport}
+							isZoomed={isZoomed}
+							onChange={setIsZoomed}
+						/>
+					</Flex>
 				)}
 			</>
 		</Box>

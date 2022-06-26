@@ -4,11 +4,8 @@ import Players from './Players';
 import Search from './Search';
 import Title from './Title';
 import TogglesInline from './TogglesInline';
-import { useSelector } from 'react-redux';
-import { AppState } from './store/slice';
 
 const Home = (): React.ReactElement => {
-	const { selections } = useSelector(AppState);
 	const breakpoint = useBreakpointValue({ base: 'fixed', sm: 'inline' });
 
 	return (
@@ -16,9 +13,7 @@ const Home = (): React.ReactElement => {
 			<Title />
 			<Search />
 			<Players />
-			{breakpoint === 'inline' && selections && selections.length > 0 && (
-				<TogglesInline />
-			)}
+			{breakpoint === 'inline' && <TogglesInline />}
 			<ChartTabset />
 		</Flex>
 	);

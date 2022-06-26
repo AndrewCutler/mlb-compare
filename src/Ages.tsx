@@ -29,6 +29,7 @@ const Ages = ({ fixed }: { fixed?: boolean }): React.ReactElement => {
 		<Box mb={3}>
 			<Text>Compare only these ages</Text>
 			<Flex flexDirection={fixed ? 'column' : 'row'}>
+				{/* TODO: add career */}
 				{uniqueAges.map((age) => (
 					<div key={age}>
 						<Checkbox

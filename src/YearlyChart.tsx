@@ -45,12 +45,22 @@ const CustomTooltip = ({
 
 const getChartWidth = (isZoomed: boolean, isSmall: boolean): number => {
 	if (isSmall) {
-		return 250;
+		return 300;
 	} else if (isZoomed) {
 		return 720;
 	}
 
 	return 450;
+};
+
+const getChartHeight = (isZoomed: boolean, isSmall: boolean): number => {
+	if (isSmall) {
+		return 200;
+	} else if (isZoomed) {
+		return 500;
+	}
+
+	return 300;
 };
 
 const YearlyChart = ({
@@ -60,13 +70,17 @@ const YearlyChart = ({
 	stat: string;
 	playerData: ISelectionPlayer[];
 }): React.ReactElement => {
-	const breakpoint = useBreakpointValue({ sm: 'small' });
+	const breakpoint = useBreakpointValue({ base: 'small', sm: 'normal' });
 	const { ages } = useSelector(AppState);
 
 	const [chartData, setChartData] = useState<any[]>([]);
 	const [chartKeys, setChartKeys] = useState<any[]>([]);
 	const [isZoomed, setIsZoomed] = useState<boolean>(false);
 	const [includeCareer, setIncludeCareer] = useState<boolean>(false);
+
+	useEffect(() => {
+		console.log(breakpoint);
+	}, [breakpoint]);
 
 	useEffect(() => {
 		if (playerData && playerData.length > 0) {
@@ -103,7 +117,10 @@ const YearlyChart = ({
 									isZoomed,
 									breakpoint === 'small'
 								)}
-								height={isZoomed ? 500 : 300}
+								height={getChartHeight(
+									isZoomed,
+									breakpoint === 'small'
+								)}
 								data={chartData}
 							>
 								<CartesianGrid strokeDasharray='5 5' />

@@ -1,35 +1,29 @@
 import '@fontsource/inconsolata/700.css';
 
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import {
+	ChakraProvider,
+	extendTheme,
+	useBreakpointValue
+} from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Home from './Home';
-import { Provider } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Spinner from './Spinner';
-import store from './store/store';
+import TogglesFooter from './TogglesFooter';
+import { AppState } from './store/slice';
 
 export const App = () => {
-	const theme = extendTheme({
-		fonts: {
-			body: 'Inconsolata',
-		},
-		styles: {
-			global: {
-				body: {
-					fontSize: '20px'
-				},
-			}
-		},
-	});
+	const { selections } = useSelector(AppState);
+	const breakpoint = useBreakpointValue({ base: 'fixed', sm: 'inline' });
 
 	return (
-		<ChakraProvider theme={theme}>
-			<Provider store={store}>
-				<QueryClientProvider client={new QueryClient()}>
-					<Spinner />
-					<Home />
-				</QueryClientProvider>
-			</Provider>
-		</ChakraProvider>
+		<QueryClientProvider client={new QueryClient()}>
+			<Spinner />
+			<Home />
+			{breakpoint === 'fixed' && selections && selections.length > 0 && (
+				<TogglesFooter />
+			)}
+		</QueryClientProvider>
 	);
 };

@@ -1,5 +1,6 @@
 import {
 	Button,
+	filter,
 	Flex,
 	Menu,
 	MenuButton,
@@ -7,14 +8,43 @@ import {
 	MenuList,
 	useColorModeValue
 } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import Ages from './Ages';
 import Stats from './Stats';
-import { AppState } from './store/slice';
+import {
+	AppState,
+	resetAges,
+	resetSeasons,
+	toggleAge,
+	toggleSeason
+} from './store/slice';
+import TimeframeFilters, { ITimeframeFiltersConfig } from './TimeframeFilters';
 
 const TogglesFooter = (): React.ReactElement => {
-	const { selections } = useSelector(AppState);
+	const { selections, ages, seasons, filter } = useSelector(AppState);
 	const bg = useColorModeValue('gray.300', 'gray.700');
+
+	const [config, setConfig] = useState<ITimeframeFiltersConfig>({
+		toggle: toggleAge,
+		reset: resetAges,
+		timeframes: ages
+	});
+
+	useEffect(() => {
+		if (filter === 'ages') {
+			setConfig({
+				toggle: toggleAge,
+				reset: resetAges,
+				timeframes: ages
+			});
+		} else {
+			setConfig({
+				toggle: toggleSeason,
+				reset: resetSeasons,
+				timeframes: seasons
+			});
+		}
+	}, [ages, filter, seasons]);
 
 	if (!selections || selections.length <= 0) {
 		return <></>;
@@ -46,7 +76,12 @@ const TogglesFooter = (): React.ReactElement => {
 				<MenuButton as={Button}>Ages</MenuButton>
 				<MenuList>
 					<MenuItem>
-						<Ages fixed />
+						<TimeframeFilters
+							fixed
+							toggle={config.toggle}
+							reset={config.reset}
+							timeframes={config.timeframes}
+						/>
 					</MenuItem>
 				</MenuList>
 			</Menu>

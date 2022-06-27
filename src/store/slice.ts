@@ -11,6 +11,7 @@ export interface IAppState {
 	resetSearch: boolean;
 	tabIndex: number;
 	isLoading: boolean;
+	filter: 'ages' | 'seasons';
 }
 
 export interface IStore {
@@ -27,6 +28,7 @@ const initialState: IAppState = {
 	ages: [],
 	seasons: [],
 	isLoading: false,
+	filter: 'ages',
 }
 
 export const appSlice = createSlice({
@@ -99,11 +101,18 @@ export const appSlice = createSlice({
 		},
 		resetSeasons: (state, { payload }: PayloadAction<string[]>) => {
 			state.seasons = payload;
+		},
+		toggleFilter: (state) => {
+			if (state.filter === 'ages') {
+				state.filter = 'seasons';
+			} else {
+				state.filter = 'ages';
+			}
 		}
 	},
 });
 
-export const { setResetSearch, setSearchResults, addSelection, toggleLoading, toggleAge, toggleSeason, resetSeasons, removeSelection, toggleStat, setTabIndex, resetAges } = appSlice.actions;
+export const { setResetSearch, setSearchResults, addSelection, toggleLoading, toggleAge, toggleFilter, toggleSeason, resetSeasons, removeSelection, toggleStat, setTabIndex, resetAges } = appSlice.actions;
 
 export const AppState = (state: IStore) => state.app;
 

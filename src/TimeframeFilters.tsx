@@ -4,6 +4,7 @@ import {
 	Flex,
 	FormControl,
 	FormLabel,
+	Grid,
 	Switch,
 	Text
 } from '@chakra-ui/react';
@@ -73,9 +74,10 @@ const TimeframeFilters = ({
 	}
 
 	return (
+		// TODO: turn into accordion
 		<Box mb={3}>
 			<Text>Compare only these {filter}</Text>
-			<Flex flexDirection={fixed ? 'column' : 'row'}>
+			<Grid gridTemplateColumns={fixed ? 'auto' : 'repeat(7, 1fr)'}>
 				{uniqueTimeframes.map((timeframe) => (
 					<div key={timeframe}>
 						<Checkbox
@@ -88,7 +90,7 @@ const TimeframeFilters = ({
 						</Checkbox>
 					</div>
 				))}
-			</Flex>
+			</Grid>
 			<Box>
 				<FormControl display='flex'>
 					<Switch

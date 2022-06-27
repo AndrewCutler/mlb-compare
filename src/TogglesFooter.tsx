@@ -1,26 +1,32 @@
 import {
+	Box,
 	Button,
 	filter,
 	Flex,
+	FormControl,
+	FormLabel,
 	Menu,
 	MenuButton,
 	MenuItem,
 	MenuList,
+	Switch,
 	useColorModeValue
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Stats from './Stats';
 import {
 	AppState,
 	resetAges,
 	resetSeasons,
 	toggleAge,
+	toggleFilter,
 	toggleSeason
 } from './store/slice';
 import TimeframeFilters, { ITimeframeFiltersConfig } from './TimeframeFilters';
 
 const TogglesFooter = (): React.ReactElement => {
+	const dispatch = useDispatch();
 	const { selections, ages, seasons, filter } = useSelector(AppState);
 	const bg = useColorModeValue('gray.300', 'gray.700');
 
@@ -72,8 +78,28 @@ const TogglesFooter = (): React.ReactElement => {
 					</MenuItem>
 				</MenuList>
 			</Menu>
+			<Box>
+				<FormControl
+					display='flex'
+					flexDirection='column'
+					alignItems='center'
+				>
+					<Switch
+						id='switch'
+						size='sm'
+						isChecked={filter === 'seasons'}
+						mr={5}
+						onChange={() => dispatch(toggleFilter())}
+					/>
+					<FormLabel htmlFor='switch' fontSize='xs'>
+						{filter === 'seasons' ? 'Ages' : 'Seasons'}
+					</FormLabel>
+				</FormControl>
+			</Box>
 			<Menu>
-				<MenuButton as={Button}>Ages</MenuButton>
+				<MenuButton as={Button}>
+					{filter.replace(/^\w/, (c) => c.toUpperCase())}
+				</MenuButton>
 				<MenuList>
 					<MenuItem>
 						<TimeframeFilters

@@ -8,9 +8,13 @@ import {
 	XAxis,
 	YAxis
 } from 'recharts';
-import { Box, Checkbox, Flex, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Flex, useBreakpointValue } from '@chakra-ui/react';
 import { RiZoomInLine, RiZoomOutLine } from 'react-icons/ri';
-import { buildYearlyChartData, getTooltipYear } from './utils/chart.yearly';
+import {
+	buildYearlyChartData,
+	getTooltipYear,
+	IBarKey
+} from './utils/chart.yearly';
 import { useEffect, useState } from 'react';
 
 import { COLORS } from './utils/colors';
@@ -101,10 +105,10 @@ const YearlyChart = ({
 	playerData: ISelectionPlayer[];
 }): React.ReactElement => {
 	const breakpoint = useBreakpointValue({ base: 'small', sm: 'normal' });
-	const { ages } = useSelector(AppState);
+	const { ages, seasons, filter } = useSelector(AppState);
 
 	const [chartData, setChartData] = useState<any[]>([]);
-	const [chartKeys, setChartKeys] = useState<any[]>([]);
+	const [chartKeys, setChartKeys] = useState<IBarKey[]>([]);
 	const [isZoomed, setIsZoomed] = useState<boolean>(false);
 
 	const isSmallViewport = breakpoint === 'small';
@@ -114,14 +118,14 @@ const YearlyChart = ({
 			const { chartData: _chartData, uniqueKeys } = buildYearlyChartData(
 				stat,
 				playerData,
-				ages,
-				[] // seasons
+				filter === 'ages' ? ages : seasons,
+				filter
 			);
 
 			setChartData(_chartData);
 			setChartKeys(uniqueKeys);
 		}
-	}, [playerData, stat, ages]);
+	}, [playerData, stat, ages, filter, seasons]);
 
 	return (
 		<Box>

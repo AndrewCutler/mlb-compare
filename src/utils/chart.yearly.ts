@@ -1,10 +1,14 @@
-import { ISelectionPlayer } from '../models/api.models';
+import { ISelectionPlayer, IStats } from '../models/api.models';
 import { v4 as uuidv4 } from 'uuid';
+
+/** 
+* Abandon all hope ye who enter here.
+*/
 
 const createKey = (stat: string, name: string): string =>
 	`${stat}_${name.replaceAll(/\s/g, '_')}`;
 
-interface IBarKey {
+export interface IBarKey {
 	Key: string;
 	Name: string;
 }
@@ -15,14 +19,25 @@ const getValueForStatByAge = (
 	stat: string
 ): number | undefined => player.StatsByAge[age]?.Stats[stat];
 
-export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[], ages: string[], seasons: string[]) => {
-	const uniqueAges = Array.from(
+const getValueForStatByYear = (
+	player: ISelectionPlayer,
+	year: string,
+	stat: string): number | undefined => Object.values(player.StatsByAge).find(({ Year }) => Year === year)?.Stats[stat];
+
+export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[], timeframes: string[], filter: 'ages' | 'seasons') => {
+	const uniqueTimeframes = Array.from(
 		new Set(
 			playerData
-				.map(({ StatsByAge }) => Object.keys(StatsByAge))
+				.map(({ StatsByAge }) => {
+					if (filter === 'ages') {
+						return Object.keys(StatsByAge);
+					}
+
+					return Object.values(StatsByAge).map(({ Year }) => Year);
+				})
 				.flat()
-				.filter(age => {
-					return ages?.includes(age);
+				.filter(timeframe => {
+					return timeframes?.includes(timeframe);
 				})
 		)
 	);
@@ -33,10 +48,11 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 
 	const uniqueKeys: IBarKey[] = [];
 
-	const chartData = uniqueAges
+	const chartData = uniqueTimeframes
 		.map((age) => {
 			// interface { Age: string; Year: string; [key in keyof Stats]: any }  (?)
 			const result: any = { Age: age };
+			// if (filter === 'ages') {
 			for (const player of playerData) {
 				if (player.StatsByAge[age]) {
 					const id = playerToId[player.Name];
@@ -61,9 +77,41 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 				}
 			}
 
+			console.log(result)
 			return result;
+			// }
+
+			// for (const player of playerData) {
+			// 	const playerYearsDictionary = Object
+			// 		.values(player.StatsByAge)
+			// 		.reduce((prev, curr) => ({ ...prev, [curr.Year]: curr.Stats }), {} as { [year: string]: IStats });
+			// 	if (playerYearsDictionary[timeframe]) {
+			// 		const id = playerToId[player.Name];
+			// 		const statKey = createKey(stat, id);
+			// 		if (
+			// 			!uniqueKeys.map(({ Key }) => Key).includes(statKey)
+			// 		) {
+			// 			uniqueKeys.push({
+			// 				Key: statKey,
+			// 				Name: player.Name
+			// 			});
+			// 		}
+
+			// 		result[statKey] = getValueForStatByYear(
+			// 			player,
+			// 			timeframe,
+			// 			stat
+			// 		);
+
+			// 		// const seasonKey = createKey('Season', id);
+			// 		// result[seasonKey] = player.StatsByAge[timeframe].Year;
+			// 	}
+			// }
+
+
+			// return {};
 		})
-		.sort(({ Age: AgeA }, { Age: AgeB }) => (AgeA > AgeB ? 1 : -1));
+		.sort(({ Timeframe: TimeframeA }, { Timeframe: TimeframeB }) => (TimeframeA > TimeframeB ? 1 : -1));
 
 	return { chartData, uniqueKeys };
 }

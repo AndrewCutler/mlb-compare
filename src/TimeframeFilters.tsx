@@ -39,7 +39,6 @@ const TimeframeFilters = ({
 
 	useEffect(() => {
 		let uniques;
-		// if filter === 'ages', do this. Else, grab seasons.
 		if (filter === 'ages') {
 			uniques = Array.from(
 				new Set(

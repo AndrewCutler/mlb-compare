@@ -2,7 +2,7 @@ import { IPlayerStats } from '../models/api.models';
 import { ISelectionPlayer } from './../models/api.models';
 import { IStatSelection } from '../models/local.models';
 
-export const mapToChartData = (data: ISelectionPlayer[], stats: IStatSelection, ages: number[]) => {
+export const buildRadarChartData = (data: ISelectionPlayer[], stats: IStatSelection, ages: number[], seasons: []) => {
 	if (!ages || ages.length === 0) {
 		const nameToStats = data.reduce((prev, curr) => ({ ...prev, [curr.Name]: curr.StatsByAge }), {} as { [name: string]: IPlayerStats });
 
@@ -25,7 +25,7 @@ export const mapToChartData = (data: ISelectionPlayer[], stats: IStatSelection, 
 
 		return result;
 	}
-	
+
 	return [];
 };
 

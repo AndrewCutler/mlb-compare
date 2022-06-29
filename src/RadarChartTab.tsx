@@ -7,7 +7,7 @@ import {
 	RadarChart
 } from 'recharts';
 import { Wrap, useColorModeValue } from '@chakra-ui/react';
-import { buildDomain, mapToChartData } from './utils/chart.radar';
+import { buildDomain, buildRadarChartData } from './utils/chart.radar';
 import { useEffect, useState } from 'react';
 
 import { AppState } from './store/slice';
@@ -27,7 +27,7 @@ const RadarChartTab = (): React.ReactElement => {
 	const [domain, setDomain] = useState<number[]>([]);
 
 	useEffect(() => {
-		setChartData(mapToChartData(selections, defaultStats, []));
+		setChartData(buildRadarChartData(selections, defaultStats, [], []));
 	}, [selections]);
 
 	useEffect(() => {

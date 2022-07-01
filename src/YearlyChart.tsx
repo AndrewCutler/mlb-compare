@@ -118,7 +118,7 @@ const YearlyChart = ({
 			const { chartData: _chartData, uniqueKeys } = buildYearlyChartData(
 				stat,
 				playerData,
-				filter === 'ages' ? ages : seasons,
+				new Set(filter === 'ages' ? ages : seasons),
 				filter
 			);
 			console.log(_chartData);

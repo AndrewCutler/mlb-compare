@@ -43,7 +43,7 @@ const TimeframeFilters = ({
 			uniques = Array.from(
 				new Set(
 					selections
-						.map(({ StatsByAge }) => Object.keys(StatsByAge))
+						.map(({ Stats: StatsByAge }) => Object.keys(StatsByAge))
 						.flat()
 						.sort()
 				)
@@ -52,7 +52,7 @@ const TimeframeFilters = ({
 			uniques = Array.from(
 				new Set(
 					selections
-						.map(({ StatsByAge }) =>
+						.map(({ Stats: StatsByAge }) =>
 							Object.values(StatsByAge).map(({ Year }) => Year)
 						)
 						.flat()

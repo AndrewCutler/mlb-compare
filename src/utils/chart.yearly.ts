@@ -1,4 +1,4 @@
-import { ISelectionPlayer, IStats } from '../models/api.models';
+import { IAgeStats, ISelectionPlayer, IStats, IYearStats } from '../models/api.models';
 import { v4 as uuidv4 } from 'uuid';
 
 /** 
@@ -17,28 +17,41 @@ const getValueForStatByAge = (
 	player: ISelectionPlayer,
 	age: string,
 	stat: string
-): number | undefined => player.StatsByAge[age]?.Stats[stat];
+	// ): number | undefined => player.Stats[age]?.Stats[stat];
+): number | undefined => 1;
 
 const getValueForStatByYear = (
 	player: ISelectionPlayer,
 	year: string,
-	stat: string): number | undefined => Object.values(player.StatsByAge).find(({ Year }) => Year === year)?.Stats[stat];
+	stat: string): number | undefined => Object.values(player.Stats).find(({ Year }) => Year === year)?.Stats[stat];
 
-export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[], timeframes: string[], filter: 'ages' | 'seasons') => {
+export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[], timeframes: Set<string>, filter: 'ages' | 'seasons') => {
+	// TODO: find alternative to all if/else filter checks
 	const uniqueTimeframes = Array.from(
 		new Set(
 			playerData
-				.map(({ StatsByAge }) => {
+				.map(({ Stats }) => {
 					if (filter === 'ages') {
-						return Object.keys(StatsByAge);
+						return Stats.Ages;
 					}
 
-					return Object.values(StatsByAge).map(({ Year }) => Year);
+					return Stats.Years;
+				})
+				.filter(row => {
+					if (filter === 'ages') {
+						return (row as IAgeStats[]).filter(r => timeframes.has(r.Age));
+					}
+
+					return (row as IYearStats[]).filter(r => timeframes.has(r.Year));
+				})
+				.map(a => {
+					if (filter === 'ages') {
+						return (a as IAgeStats[]).map(b => b.Age);
+					}
+
+					return (a as IYearStats[]).map(b => b.Year);
 				})
 				.flat()
-				.filter(timeframe => {
-					return timeframes?.includes(timeframe);
-				})
 		)
 	);
 	const playerToId = playerData.reduce(
@@ -53,7 +66,7 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 			const result: { [key: string]: string | number | undefined } = { Age: age };
 			if (filter === 'ages') {
 				for (const player of playerData) {
-					if (player.StatsByAge[age]) {
+					if (player.Stats.Ages.find(({ Age }) => Age === age)) {
 						const id = playerToId[player.Name];
 						const statKey = createKey(stat, id);
 						if (
@@ -72,7 +85,7 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 						);
 
 						const seasonKey = createKey('Season', id);
-						result[seasonKey] = player.StatsByAge[age].Year;
+						result[seasonKey] = player.Stats[age].Year;
 						console.log(result);
 					}
 				}
@@ -131,7 +144,8 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 
 
 				// return {};
-			})
+			} return {};
+		})
 		.sort((a, b) => {
 			if (filter === 'ages') {
 				return a['Age']! > b['Age']! ? 1 : -1;

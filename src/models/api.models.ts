@@ -16,7 +16,7 @@ export interface ISeasonStats {
 
 export interface ISelectionPlayer {
 	Name: string;
-	StatsByAge: IPlayerStats;
+	Stats: PlayerStats;
 }
 
 interface IPlayerStats {

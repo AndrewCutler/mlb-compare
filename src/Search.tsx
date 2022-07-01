@@ -100,7 +100,7 @@ const Search = (): React.ReactElement => {
 			dispatch(
 				addSelection({
 					Name: name,
-					StatsByAge: endpointData
+					Stats: endpointData
 				})
 			);
 			setName('');

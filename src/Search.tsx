@@ -12,7 +12,7 @@ import {
 	AutoCompleteList
 } from '@choc-ui/chakra-autocomplete';
 import { Box, Flex } from '@chakra-ui/react';
-import { IPlayerStats, ISearchResult } from './models/api.models';
+import { PlayerStats, ISearchResult } from './models/api.models';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import apiUrl from './utils/api';
@@ -52,7 +52,7 @@ const Search = (): React.ReactElement => {
 		data: endpointData,
 		isFetched: isEndpointFetched,
 		isFetching: isEndpointFetching
-	} = useQuery<IPlayerStats>(
+	} = useQuery<PlayerStats>(
 		['stats', endpoint],
 		() => endpointRequest(endpoint),
 		{

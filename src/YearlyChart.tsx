@@ -121,6 +121,7 @@ const YearlyChart = ({
 				filter === 'ages' ? ages : seasons,
 				filter
 			);
+			console.log(_chartData);
 
 			setChartData(_chartData);
 			setChartKeys(uniqueKeys);
@@ -138,7 +139,9 @@ const YearlyChart = ({
 							data={chartData}
 						>
 							<CartesianGrid strokeDasharray='5 5' />
-							<XAxis dataKey='Age' />
+							<XAxis
+								dataKey={filter === 'ages' ? 'Age' : 'Season'}
+							/>
 							<YAxis
 								type='number'
 								// TODO: handle percentage stats like BA

@@ -1,10 +1,10 @@
-import { IPlayerStats } from '../models/api.models';
+import { PlayerStats } from '../models/api.models';
 import { ISelectionPlayer } from './../models/api.models';
 import { IStatSelection } from '../models/local.models';
 
 export const buildRadarChartData = (data: ISelectionPlayer[], stats: IStatSelection, ages: number[], seasons: []) => {
 	if (!ages || ages.length === 0) {
-		const nameToStats = data.reduce((prev, curr) => ({ ...prev, [curr.Name]: curr.StatsByAge }), {} as { [name: string]: IPlayerStats });
+		const nameToStats = data.reduce((prev, curr) => ({ ...prev, [curr.Name]: curr.StatsByAge }), {} as { [name: string]: PlayerStats });
 
 		const result = stats.map(stat => {
 			let current = {

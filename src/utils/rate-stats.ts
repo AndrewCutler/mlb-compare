@@ -1,4 +1,4 @@
-import { IPlayerStats, ISeasonStats, ISelectionPlayer, IStats } from '../models/api.models';
+import { PlayerStats, ISeasonStats, ISelectionPlayer, IStats } from '../models/api.models';
 
 const getStatValue = (stats: IStats, statName: string): number => Number(stats[statName]);
 

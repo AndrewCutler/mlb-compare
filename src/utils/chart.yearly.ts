@@ -50,68 +50,95 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 
 	const chartData = uniqueTimeframes
 		.map((age) => {
-			// interface { Age: string; Year: string; [key in keyof Stats]: any }  (?)
-			const result: any = { Age: age };
-			// if (filter === 'ages') {
-			for (const player of playerData) {
-				if (player.StatsByAge[age]) {
-					const id = playerToId[player.Name];
-					const statKey = createKey(stat, id);
-					if (
-						!uniqueKeys.map(({ Key }) => Key).includes(statKey)
-					) {
-						uniqueKeys.push({
-							Key: statKey,
-							Name: player.Name
-						});
+			const result: { [key: string]: string | number | undefined } = { Age: age };
+			if (filter === 'ages') {
+				for (const player of playerData) {
+					if (player.StatsByAge[age]) {
+						const id = playerToId[player.Name];
+						const statKey = createKey(stat, id);
+						if (
+							!uniqueKeys.map(({ Key }) => Key).includes(statKey)
+						) {
+							uniqueKeys.push({
+								Key: statKey,
+								Name: player.Name
+							});
+						}
+
+						result[statKey] = getValueForStatByAge(
+							player,
+							age,
+							stat
+						);
+
+						const seasonKey = createKey('Season', id);
+						result[seasonKey] = player.StatsByAge[age].Year;
+						console.log(result);
 					}
-
-					result[statKey] = getValueForStatByAge(
-						player,
-						age,
-						stat
-					);
-
-					const seasonKey = createKey('Season', id);
-					result[seasonKey] = player.StatsByAge[age].Year;
 				}
+
+
 			}
 
-			console.log(result)
-			return result;
-			// }
+			if (filter === 'seasons') {
+				const seasonKey = Object.keys(result).find((el) => el.startsWith('Season_'))!;
+				console.log(Object.keys(result))
 
-			// for (const player of playerData) {
-			// 	const playerYearsDictionary = Object
-			// 		.values(player.StatsByAge)
-			// 		.reduce((prev, curr) => ({ ...prev, [curr.Year]: curr.Stats }), {} as { [year: string]: IStats });
-			// 	if (playerYearsDictionary[timeframe]) {
-			// 		const id = playerToId[player.Name];
-			// 		const statKey = createKey(stat, id);
-			// 		if (
-			// 			!uniqueKeys.map(({ Key }) => Key).includes(statKey)
-			// 		) {
-			// 			uniqueKeys.push({
-			// 				Key: statKey,
-			// 				Name: player.Name
-			// 			});
-			// 		}
+				return {
+					...result,
+					Season: result[seasonKey]
+				};
+				// return Object.keys(result).map((yearKey) => {
+				// 	// const yearKey = Object.keys(datum).find((el) => el.startsWith('Season_'))!;
+				// 	const year = result[yearKey];
+				// 	return {
+				// 		...result,
+				// 		Season: year,
+				// 	}
+				// });
+				// }
 
-			// 		result[statKey] = getValueForStatByYear(
-			// 			player,
-			// 			timeframe,
-			// 			stat
-			// 		);
+				console.log(result)
+				return result;
+				// }
 
-			// 		// const seasonKey = createKey('Season', id);
-			// 		// result[seasonKey] = player.StatsByAge[timeframe].Year;
-			// 	}
-			// }
+				// for (const player of playerData) {
+				// 	const playerYearsDictionary = Object
+				// 		.values(player.StatsByAge)
+				// 		.reduce((prev, curr) => ({ ...prev, [curr.Year]: curr.Stats }), {} as { [year: string]: IStats });
+				// 	if (playerYearsDictionary[timeframe]) {
+				// 		const id = playerToId[player.Name];
+				// 		const statKey = createKey(stat, id);
+				// 		if (
+				// 			!uniqueKeys.map(({ Key }) => Key).includes(statKey)
+				// 		) {
+				// 			uniqueKeys.push({
+				// 				Key: statKey,
+				// 				Name: player.Name
+				// 			});
+				// 		}
+
+				// 		result[statKey] = getValueForStatByYear(
+				// 			player,
+				// 			timeframe,
+				// 			stat
+				// 		);
+
+				// 		// const seasonKey = createKey('Season', id);
+				// 		// result[seasonKey] = player.StatsByAge[timeframe].Year;
+				// 	}
+				// }
 
 
-			// return {};
-		})
-		.sort(({ Timeframe: TimeframeA }, { Timeframe: TimeframeB }) => (TimeframeA > TimeframeB ? 1 : -1));
+				// return {};
+			})
+		.sort((a, b) => {
+			if (filter === 'ages') {
+				return a['Age']! > b['Age']! ? 1 : -1;
+			}
+
+			return a['Season']! > b['Season']! ? 1 : -1;
+		});
 
 	return { chartData, uniqueKeys };
 }

@@ -19,8 +19,26 @@ export interface ISelectionPlayer {
 	StatsByAge: IPlayerStats;
 }
 
-export interface IPlayerStats {
-	[age: string]: ISeasonStats;
+interface IPlayerStats {
+	Stats: IStats;
+}
+
+export interface IAgeStats extends IPlayerStats {
+	Age: string;
+}
+
+export interface IYearStats extends IPlayerStats {
+	Year: string;
+}
+
+export class PlayerStats {
+	Ages: IAgeStats[];
+	Years: IYearStats[];
+
+	constructor() {
+		this.Ages = [];
+		this.Years = [];
+	}
 }
 
 export interface IStats {

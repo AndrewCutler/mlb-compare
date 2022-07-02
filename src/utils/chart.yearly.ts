@@ -13,7 +13,7 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 	const uniqueKeys: IBarKey[] = [];
 
 	const chartData = Array.from(timeframes)
-		.map((timeframe) => {
+		.map(timeframe => {
 			const result: { [key: string]: string | number | undefined } = { Timeframe: timeframe };
 			for (const player of playerData) {
 				const current = filter === 'ages' ? player.Stats.Ages[timeframe] : player.Stats.Years[timeframe];

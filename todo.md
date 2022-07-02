@@ -5,6 +5,6 @@
 -   shareable
 -   tolltip season for rate stats (ba, obp) does not appear
 -   radar charts do not toggle stats
--   why does Willie Mays cause error? (WAR related?)
 -   apply timeframe filters to radar charts
 -   improve radar chart readability
+-   put components in folders

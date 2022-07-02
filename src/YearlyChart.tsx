@@ -121,7 +121,6 @@ const YearlyChart = ({
 				new Set(filter === 'ages' ? ages : seasons),
 				filter
 			);
-			console.log(_chartData);
 
 			setChartData(_chartData);
 			setChartKeys(uniqueKeys);

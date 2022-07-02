@@ -20,9 +20,9 @@ import apiUrl from './utils/api';
 import { useQuery } from 'react-query';
 
 const searchRequest = async (name: string) =>
-	fetch(`${apiUrl}/search/${name}`).then((res) => res.json());
+	fetch(`${apiUrl()}/search/${name}`).then((res) => res.json());
 const endpointRequest = async (endpoint: string) =>
-	fetch(`${apiUrl}/stats/${endpoint}`).then((res) => res.json());
+	fetch(`${apiUrl()}/stats/${endpoint}`).then((res) => res.json());
 
 // TODO: refactor; probably has unnecessary stuff. Could be componentized? Create hooks for queries?
 const Search = (): React.ReactElement => {

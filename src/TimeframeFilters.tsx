@@ -38,28 +38,19 @@ const TimeframeFilters = ({
 	const [uniqueTimeframes, setUniqueTimeframes] = useState<string[]>([]);
 
 	useEffect(() => {
-		let uniques;
-		if (filter === 'ages') {
-			uniques = Array.from(
-				new Set(
-					selections
-						.map(({ Stats: StatsByAge }) => Object.keys(StatsByAge))
-						.flat()
-						.sort()
-				)
-			);
-		} else {
-			uniques = Array.from(
-				new Set(
-					selections
-						.map(({ Stats: StatsByAge }) =>
-							Object.values(StatsByAge).map(({ Year }) => Year)
-						)
-						.flat()
-						.sort()
-				)
-			);
-		}
+		const uniques = Array.from(
+			new Set(
+				selections
+					.map((player) => player.Stats)
+					.map(({ Ages, Years }) => {
+						if (filter === 'ages') return Object.keys(Ages);
+
+						return Object.keys(Years);
+					})
+					.flat()
+					.sort()
+			)
+		);
 		setUniqueTimeframes(uniques);
 	}, [dispatch, filter, selections]);
 

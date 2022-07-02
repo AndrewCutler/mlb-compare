@@ -9,6 +9,8 @@ export interface IStatOption {
 	IsRadar?: boolean;
 }
 
+export type FilterType = 'ages' | 'seasons';
+
 export const STATS: IStatSelection = [
 	{ DisplayLabel: 'HR', Label: 'HR', IsDisabled: true, IsChecked: true },
 	{ DisplayLabel: 'H', Label: 'H', IsDisabled: true, IsChecked: true },
@@ -33,3 +35,8 @@ export const STATS: IStatSelection = [
 ];
 
 export const TABS = ['YEARLY', 'RADAR'];
+
+export interface IBarKey {
+	Key: string;
+	Name: string;
+}

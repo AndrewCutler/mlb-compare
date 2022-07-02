@@ -10,21 +10,20 @@ import {
 } from 'recharts';
 import { Box, Flex, useBreakpointValue } from '@chakra-ui/react';
 import { RiZoomInLine, RiZoomOutLine } from 'react-icons/ri';
-import {
-	buildYearlyChartData,
-	getTooltipYear,
-	IBarKey
-} from './utils/chart.yearly';
+import { buildYearlyChartData, getTooltipYear } from './utils/chart.yearly';
 import { useEffect, useState } from 'react';
 
 import { COLORS } from './utils/colors';
 import { ISelectionPlayer } from './models/api.models';
 import { useSelector } from 'react-redux';
 import { AppState } from './store/slice';
+import { IBarKey } from './models/local.models';
 
 const CustomTooltip = ({
 	payload: tooltipPayload
 }: any): React.ReactElement => {
+	const { filter } = useSelector(AppState);
+
 	if (tooltipPayload && tooltipPayload.length > 0) {
 		return (
 			<Flex
@@ -35,7 +34,7 @@ const CustomTooltip = ({
 				{tooltipPayload.map(
 					({ payload, name, value, dataKey }: any) => (
 						<div key={name}>
-							{name} ({getTooltipYear(payload, dataKey)}
+							{name} ({getTooltipYear(payload, dataKey, filter)}
 							): {value}
 						</div>
 					)
@@ -107,6 +106,7 @@ const YearlyChart = ({
 	const breakpoint = useBreakpointValue({ base: 'small', sm: 'normal' });
 	const { ages, seasons, filter } = useSelector(AppState);
 
+	// TODO: type
 	const [chartData, setChartData] = useState<any[]>([]);
 	const [chartKeys, setChartKeys] = useState<IBarKey[]>([]);
 	const [isZoomed, setIsZoomed] = useState<boolean>(false);

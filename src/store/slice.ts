@@ -1,5 +1,5 @@
 import { ISearchResult, ISelectionPlayer } from '../models/api.models';
-import { IStatSelection, STATS } from '../models/local.models';
+import { FilterType, IStatSelection, STATS } from '../models/local.models';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export interface IAppState {
@@ -11,7 +11,7 @@ export interface IAppState {
 	resetSearch: boolean;
 	tabIndex: number;
 	isLoading: boolean;
-	filter: 'ages' | 'seasons';
+	filter: FilterType;
 }
 
 export interface IStore {
@@ -112,7 +112,20 @@ export const appSlice = createSlice({
 	},
 });
 
-export const { setResetSearch, setSearchResults, addSelection, toggleLoading, toggleAge, toggleFilter, toggleSeason, resetSeasons, removeSelection, toggleStat, setTabIndex, resetAges } = appSlice.actions;
+export const {
+	setResetSearch,
+	setSearchResults,
+	addSelection,
+	toggleLoading,
+	toggleAge,
+	toggleFilter,
+	toggleSeason,
+	resetSeasons,
+	removeSelection,
+	toggleStat,
+	setTabIndex,
+	resetAges
+} = appSlice.actions;
 
 export const AppState = (state: IStore) => state.app;
 

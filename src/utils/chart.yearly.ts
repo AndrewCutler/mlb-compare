@@ -1,27 +1,11 @@
-import { ISelectionPlayer, IStats, } from '../models/api.models';
+import { ISelectionPlayer, } from '../models/api.models';
 import { v4 as uuidv4 } from 'uuid';
+import { FilterType, IBarKey } from '../models/local.models';
 
 const createKey = (stat: string, name: string): string =>
 	`${stat}_${name.replaceAll(/\s/g, '_')}`;
 
-export interface IBarKey {
-	Key: string;
-	Name: string;
-}
-
-const getValueForStatByAge = (
-	player: ISelectionPlayer,
-	age: string,
-	stat: string
-	// ): number | undefined => player.Stats[age]?.Stats[stat];
-): number | undefined => 1;
-
-const getValueForStatByYear = (
-	player: ISelectionPlayer,
-	year: string,
-	stat: string): number | undefined => Object.values(player.Stats).find(({ Year }) => Year === year)?.Stats[stat];
-
-export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[], timeframes: Set<string>, filter: 'ages' | 'seasons') => {
+export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[], timeframes: Set<string>, filter: FilterType) => {
 	const playerToId = playerData.reduce(
 		(dict, player) => ({ ...dict, [player.Name]: uuidv4() }),
 		{} as { [name: string]: string }
@@ -32,8 +16,8 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 		.map((timeframe) => {
 			const result: { [key: string]: string | number | undefined } = { Timeframe: timeframe };
 			for (const player of playerData) {
-				const playerStats = filter === 'ages' ? player.Stats.Ages : player.Stats.Years;
-				if (playerStats[timeframe]) {
+				const current = filter === 'ages' ? player.Stats.Ages[timeframe] : player.Stats.Years[timeframe];
+				if (current) {
 					const id = playerToId[player.Name];
 					const statKey = createKey(stat, id);
 					if (
@@ -45,35 +29,26 @@ export const buildYearlyChartData = (stat: string, playerData: ISelectionPlayer[
 						});
 					}
 
-					result[statKey] = getValueForStatByAge(
-						player,
-						timeframe,
-						stat
-					);
-
-					// const seasonKey = createKey('Season', id);
-					// result[seasonKey] = player.Stats[timeframe].Year;
-					// console.log(result);
+					result[statKey] = current[stat];
+					result[`Age_${id}`] = current.Age;
+					result[`Year_${id}`] = current.Year;
 				}
 			}
 
 			return result;
 		})
 		.sort((a, b) => {
-			if (filter === 'ages') {
-				return a['Age']! > b['Age']! ? 1 : -1;
-			}
-
-			return a['Season']! > b['Season']! ? 1 : -1;
+			return a.Timeframe! > b.Timeframe! ? 1 : -1;
 		});
 
 	return { chartData, uniqueKeys };
 }
 
-export const getTooltipYear = (payload: any, dataKey: string) => {
+export const getTooltipYear = (payload: any, dataKey: string, filter: FilterType) => {
+	const prefix = filter === 'ages' ? 'Year' : 'Age';
 	const id = dataKey?.split('_')[1];
 	for (const key in payload) {
-		if (key === `Season_${id}`) {
+		if (key === `${prefix}_${id}`) {
 			return payload[key];
 		}
 	}

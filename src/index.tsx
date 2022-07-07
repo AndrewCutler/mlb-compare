@@ -6,11 +6,15 @@ import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import store from './store/store';
+import { colorScheme, focus } from './utils/theme';
 
 const container = document.getElementById('root');
 if (!container) throw new Error('Failed to find the root element');
 
 const theme = extendTheme({
+	colors: {
+		primary: colorScheme
+	},
 	fonts: {
 		body: 'Inconsolata'
 	},
@@ -18,6 +22,39 @@ const theme = extendTheme({
 		global: {
 			body: {
 				fontSize: '20px'
+			}
+		}
+	},
+	components: {
+		Accordion: {
+			baseStyle: {
+				container: {
+					borderColor: colorScheme['500']
+				},
+				button: {
+					_focus: focus
+				}
+			}
+		},
+		Checkbox: {
+			defaultProps: {
+				colorScheme: 'primary',
+				focusBorderColor: colorScheme['500']
+			}
+		},
+		Input: {
+			defaultProps: {
+				focusBorderColor: colorScheme['500']
+			}
+		},
+		Tabs: {
+			defaultProps: {
+				colorScheme: 'primary'
+			},
+			baseStyle: {
+				tab: {
+					_focus: focus
+				}
 			}
 		}
 	}

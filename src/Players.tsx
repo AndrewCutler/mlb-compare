@@ -19,7 +19,7 @@ const Players = (): React.ReactElement => {
 				<Badge
 					display='flex'
 					p={2}
-					colorScheme='blue'
+					colorScheme='primary'
 					_hover={{ textDecoration: 'underline' }}
 					key={Name}
 					mr={5}
